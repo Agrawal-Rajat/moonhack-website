@@ -9,7 +9,7 @@ const HeroSection = () => {
   const buttonRef = useRef(null);
 
   const calculateTimeLeft = () => {
-    const targetDate = new Date("2025-03-01T00:00:00");
+    const targetDate = new Date("2025-03-22T00:00:00");
     const now = new Date();
     const diff = targetDate - now;
 
@@ -129,7 +129,6 @@ const HeroSection = () => {
               transform: "scale(1.05)",
             },
           }}
-          onClick={() => window.location.href = "/register"}
         >
           Register Now
         </Button>
