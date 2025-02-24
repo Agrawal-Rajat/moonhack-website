@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import SponsorsSection from "./components/SponsorsSection";
 import Timeline from "./components/Timeline";
 import FAQSection from "./components/FAQSection";
+import AboutSection from "./components/AboutSection";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
             <>
               <Navbar />
               <HeroSection />
+              <AboutSection />
               <Timeline />
               <SponsorsSection />
               <FAQSection />
