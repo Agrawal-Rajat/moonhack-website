@@ -9,37 +9,37 @@ import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 const events = [
   {
     title: 'Registration Starts',
-    time: '9:00 AM',
-    date: 'March 15, 2025',
+    time: '12 Noon',
+    date: 'February 26, 2025',
     description: 'Teams start registering and checking in.',
     icon: <AccessTimeIcon />,
   },
   {
-    title: 'Hackathon Begins',
-    time: '10:00 AM',
-    date: 'March 15, 2025',
-    description: 'The coding marathon begins!',
+    title: 'Ideation + Problem Statement',
+    time: '12 Noon',
+    date: 'March 13, 2025',
+    description: 'Teams work on their problem statements and ideas.',
     icon: <BuildIcon />,
   },
   {
     title: 'Submission Deadline',
-    time: '6:00 PM',
-    date: 'March 15, 2025',
-    description: 'All teams must submit their final projects.',
+    time: '11:59 PM',
+    date: 'March 17, 2025',
+    description: 'Final submission deadline for teams.',
     icon: <HourglassEmptyIcon />,
   },
   {
-    title: 'Judging',
-    time: '7:00 PM',
-    date: 'March 15, 2025',
-    description: 'Judges evaluate the projects.',
+    title: 'Ideation Result',
+    time: 'TBD',
+    date: 'March 19, 2025',
+    description: 'Results of the ideation phase are announced.',
     icon: <AccessTimeIcon />,
   },
   {
-    title: 'Winner Announcement',
-    time: '8:00 PM',
-    date: 'March 15, 2025',
-    description: 'The winners are announced!',
+    title: 'Event',
+    time: 'TBD',
+    date: 'March 22, 2025',
+    description: 'The main hackathon event takes place.',
     icon: <CheckCircleIcon />,
   },
 ];
@@ -71,8 +71,19 @@ const Timeline = () => {
 
   return (
     <Box sx={{ py: 6, textAlign: "center", mb: 6 }}>
-      <Typography variant="h3" sx={{ fontWeight: "bold", mb: 4, textShadow: "0px 0px 15px rgba(255, 215, 0, 0.8)", padding: '20px 0px' }}>
-        Event Timeline
+      <Typography
+        variant="h2"
+        sx={{
+          fontWeight: "bold",
+          mb: 4,
+          fontSize: { xs: "3rem", sm: "4rem", md: "4.3rem" },
+          fontFamily: "Impact, sans-serif",
+          background: "linear-gradient(90deg, #f4c2c2, #e6b8a2)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+        }}
+      >
+        TimeLine
       </Typography>
       <MuiTimeline position="alternate" sx={{ padding: '0 20px' }}>
         {events.map((event, index) => (
@@ -93,7 +104,7 @@ const Timeline = () => {
                   boxShadow: 3,
                   backgroundColor: '#ff9800',
                   border: '2px solid #fff',
-                  transform: 'scale(1.5)',  // Enlarged dot
+                  transform: 'scale(1.5)',
                   width: '24px',
                   height: '24px',
                 }}
