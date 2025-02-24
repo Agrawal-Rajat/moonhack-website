@@ -12,10 +12,9 @@ const SponsorsSection = () => {
       sx={{
         py: 8,
         textAlign: "center",
-        background: "transparent",
-        borderRadius: "20px",
+        background: "radial-gradient(circle at center, #1e293b 30%, #0d1117 90%)",
         mx: "auto",
-        maxWidth: "90%",
+        maxWidth: "100%",
       }}
     >
       <Typography

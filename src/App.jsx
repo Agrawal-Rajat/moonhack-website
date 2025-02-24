@@ -1,17 +1,32 @@
-import { useState, useEffect } from "react";
-import Preloader from "./components/PreLoader";
-import MainContent from "./components/MainContent";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HeroSection from "./components/HeroSection";
+import RegisterPage from "./components/RegisterPage";
+import Navbar from "./components/Navbar";
+import SponsorsSection from "./components/SponsorsSection";
+import Timeline from "./components/Timeline";
+import FAQSection from "./components/FAQSection";
 
-function App() {
-  const [loading, setLoading] = useState(true);
+export default function App() {
+  return (
+    <Router>
+      <Routes>
+        {/* Home Page Route */}
+        <Route
+          path="/"
+          element={
+            <>
+              <Navbar />
+              <HeroSection />
+              <Timeline />
+              <SponsorsSection />
+              <FAQSection />
+            </>
+          }
+        />
 
-  useEffect(() => {
-    setTimeout(() => setLoading(false), 3000); // Show for 3 sec
-  }, []);
-
-  return loading ? <Preloader onComplete={() => setLoading(false)} /> : <MainContent />;
-
-
+        {/* Register Page Route */}
+        <Route path="/register" element={<RegisterPage />} />
+      </Routes>
+    </Router>
+  );
 }
-
-export default App;

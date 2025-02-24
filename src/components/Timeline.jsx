@@ -70,7 +70,7 @@ const Timeline = () => {
   }, []);
 
   return (
-    <Box sx={{ py: 6, textAlign: "center" }}>
+    <Box sx={{ py: 6, textAlign: "center", mb: 6 }}>
       <Typography variant="h3" sx={{ fontWeight: "bold", mb: 4, textShadow: "0px 0px 15px rgba(255, 215, 0, 0.8)", padding: '20px 0px' }}>
         Event Timeline
       </Typography>
