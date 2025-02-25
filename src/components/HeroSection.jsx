@@ -191,6 +191,7 @@ const HeroSection = () => {
         ref={buttonRef}
         variant="contained"
         onClick={() => navigate("/register")}
+        // onClick={() => window.open("/register", "_blank")}
         sx={{
           mt: 4,
           fontSize: "1rem",

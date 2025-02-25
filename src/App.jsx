@@ -13,21 +13,22 @@ import Footer from "./components/Footer";
 export default function App() {
   return (
     <Router>
+      <Navbar />
+      <div style={{ marginTop: "50px" }} />
       <Routes>
         {/* Home Page Route */}
         <Route
           path="/"
           element={
             <>
-              <Navbar />
-              <HeroSection />
-              <AboutSection />
-              <PrizeSection />
-              <Timeline />
-              <GuidelinesSection />
-              <SponsorsSection />
-              <FAQSection />
-              <Footer />
+              <div id="home"><HeroSection /></div>
+              <div id="about"><AboutSection /></div>
+              <div id="prize"><PrizeSection /></div>
+              <div id="timeline"><Timeline /></div>
+              <div id="guidelines"><GuidelinesSection /></div>
+              <div id="sponsors"><SponsorsSection /></div>
+              <div id="faqs"><FAQSection /></div>
+              <div id="contact"><Footer /></div>
             </>
           }
         />
