@@ -29,7 +29,7 @@ const faqs = [
   {
     question: " Are there any prizes?",
     answer:
-      "Yes! Winners will receive cash prizes, mentorship, and exclusive internship opportunities.",
+      "Yes! Winners will receive cash prizes, Goodies, and exclusive internship opportunities.",
   },
   {
     question: " How do I register?",
