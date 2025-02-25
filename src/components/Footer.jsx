@@ -49,13 +49,13 @@ const Footer = () => {
                 <IconButton sx={{ color: "#ffd700" }}>
                   <Email />
                 </IconButton>
-                <Typography variant="body1">contact@hackathon.com</Typography>
+                <Typography variant="body1">info.moonhack@gmail.com</Typography>
               </Box>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1, justifyContent: { xs: "center", md: "flex-start" } }}>
                 <IconButton sx={{ color: "#ffd700" }}>
                   <Phone />
                 </IconButton>
-                <Typography variant="body1">+91 98765 43210</Typography>
+                <Typography variant="body1">+91 89233 75255</Typography>
               </Box>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1, justifyContent: { xs: "center", md: "flex-start" } }}>
                 <IconButton sx={{ color: "#ffd700" }}>
