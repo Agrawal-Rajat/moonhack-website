@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { Box, Typography, Button, Container } from "@mui/material";
 import gsap from "gsap";
 import { useNavigate } from "react-router-dom";
-import { brown } from "@mui/material/colors";
 import heroImage from "../assets/heroImage.png";
 import logo1 from "../assets/medicapsLogo.png";
 import logo2 from "../assets/technoLogo.png";
@@ -70,7 +69,7 @@ const HeroSection = () => {
         justifyContent: "center",
         textAlign: "center",
         color: "white",
-        padding: "0 10%",
+        padding: { xs: "0 5%", md: "0 10%" }, // Adjusted for mobile
         background:
           "radial-gradient(circle at center, #1e293b 30%, #0d1117 90%)",
         backgroundImage: `url(${heroImage})`,
@@ -79,18 +78,23 @@ const HeroSection = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
-      {/* Logo Section with Oval Border */}
+      {/* Logo Section */}
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
-          width: "350px",
+          justifyContent: "center", // Ensures center alignment
+          width: "100%",
+          maxWidth: "400px", // Limits max width
           height: "80px",
           border: "1px solid white",
           borderRadius: "75px",
           mb: 3,
-          padding: "0 10px",
+          padding: "0 15px",
+          gap: "30px", // Adds spacing between logos and "X"
+          "@media (max-width: 600px)": {
+            maxWidth: "90%", // Makes it more fluid on small screens
+          },
         }}
       >
         <img
@@ -98,33 +102,27 @@ const HeroSection = () => {
           alt="Logo 1"
           style={{
             height: "60px",
-            maxWidth: "120px",
+            maxWidth: "40%",
             objectFit: "contain",
-            marginLeft: "14px",
           }}
         />
-
-        {/* Wrapper to properly align "X" */}
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography
-            variant="h6"
-            sx={{
-              fontWeight: "bold",
-              color: "#aaa", // Grey color
-            }}
-          >
-            X
-          </Typography>
-        </Box>
-
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: "bold",
+            color: "#aaa",
+            mx: 1,
+          }}
+        >
+          X
+        </Typography>
         <img
           src={logo2}
           alt="Logo 2"
           style={{
-            height: "130px",
-            maxWidth: "150px",
+            height: "100px",
+            maxWidth: "40%",
             objectFit: "contain",
-            marginRight: "5px",
           }}
         />
       </Box>
@@ -135,7 +133,7 @@ const HeroSection = () => {
         variant="h1"
         sx={{
           fontFamily: "Impact, sans-serif",
-          fontSize: "5rem",
+          fontSize: { xs: "3rem", md: "5rem" }, // Responsive font size
           fontWeight: "bold",
         }}
       >
@@ -145,7 +143,11 @@ const HeroSection = () => {
       {/* Subheading */}
       <Typography
         variant="subtitle1"
-        sx={{ fontSize: "1.2rem", color: "#aaa", mt: 1 }}
+        sx={{
+          fontSize: { xs: "1rem", md: "1.2rem" },
+          color: "#aaa",
+          mt: 1,
+        }}
       >
         Innovate. Code. Dominate.
       </Typography>
@@ -156,9 +158,8 @@ const HeroSection = () => {
         sx={{
           fontWeight: "bold",
           mt: 3,
-          color: "skyblue", // Soft skin-tone gradient
-          textAlign: "center",
-          fontSize: "1.3rem",
+          color: "skyblue",
+          fontSize: { xs: "1.1rem", md: "1.3rem" },
         }}
       >
         The Countdown Begins Now!
@@ -171,10 +172,10 @@ const HeroSection = () => {
         sx={{
           fontWeight: "bold",
           mt: 2,
-          fontSize: "1.5rem",
+          fontSize: { xs: "1.2rem", md: "1.5rem" },
           color: "pink",
-          letterSpacing: "12px",
-          textShadow: "0 0 15px rgba(255, 105, 180, 0.8)", // Neon Glow Effect
+          letterSpacing: "8px",
+          textShadow: "0 0 15px rgba(255, 105, 180, 0.8)",
           textAlign: "center",
           animation: "pulse 1s ease-in-out infinite alternate",
           "@keyframes pulse": {
@@ -191,11 +192,10 @@ const HeroSection = () => {
         ref={buttonRef}
         variant="contained"
         onClick={() => navigate("/register")}
-        // onClick={() => window.open("/register", "_blank")}
         sx={{
           mt: 4,
-          fontSize: "1rem",
-          padding: "16px 32px",
+          fontSize: { xs: "0.9rem", md: "1rem" },
+          padding: { xs: "12px 24px", md: "16px 32px" },
           background: "linear-gradient(90deg, #ff9800, #ff5700)",
           borderRadius: "50px",
           fontWeight: "bold",
