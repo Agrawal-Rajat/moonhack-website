@@ -49,7 +49,7 @@ const GuidelinesSection = () => {
           variant="h2"
           sx={{
             fontWeight: "bold",
-            fontSize: { xs: "2.5rem", sm: "3.5rem", md: "4rem" },
+            fontSize: { xs: "2.8rem", sm: "3.8rem", md: "4.3rem" },
             fontFamily: "Impact, sans-serif",
             background: "linear-gradient(90deg, #f4c2c2, #e6b8a2)",
             WebkitBackgroundClip: "text",
