@@ -14,7 +14,7 @@ export default function App() {
   return (
     <Router>
       <Navbar />
-      <div style={{ marginTop: "50px" }} />
+      <div style={{ marginTop: "10px" }} />
       <Routes>
         {/* Home Page Route */}
         <Route
