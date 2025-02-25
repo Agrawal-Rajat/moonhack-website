@@ -7,6 +7,8 @@ import Timeline from "./components/Timeline";
 import FAQSection from "./components/FAQSection";
 import AboutSection from "./components/AboutSection";
 import PrizeSection from "./components/PrizeSection";
+import GuidelinesSection from "./components/GuidelinesSection";
+import Footer from "./components/Footer";
 
 export default function App() {
   return (
@@ -22,8 +24,10 @@ export default function App() {
               <AboutSection />
               <PrizeSection />
               <Timeline />
+              <GuidelinesSection />
               <SponsorsSection />
               <FAQSection />
+              <Footer />
             </>
           }
         />

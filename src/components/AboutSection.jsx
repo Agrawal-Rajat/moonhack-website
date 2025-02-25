@@ -42,7 +42,7 @@ const AboutSection = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "flex-start", // Aligns content to the top
-        background: `url(${registerPageBg})`,
+        // background: `url(${registerPageBg})`,
         backgroundSize: "cover",
         color: "white",
         textAlign: "center",
