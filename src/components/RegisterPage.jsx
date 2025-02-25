@@ -45,6 +45,7 @@ const RegisterPage = () => {
             textTransform: "uppercase",
             fontFamily: "'Impact', 'Arial Black', sans-serif",
             mb: 3,
+            mt: 6,
           }}
         >
           MOONHACK REGISTRATION
