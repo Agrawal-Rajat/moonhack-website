@@ -95,7 +95,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <Typography variant="body2" sx={{ opacity: 0.7 }}>
-          © {new Date().getFullYear()} Hackathon | All Rights Reserved
+          © {new Date().getFullYear()} MoonHack | All Rights Reserved
         </Typography>
       </Container>
     </Box>
