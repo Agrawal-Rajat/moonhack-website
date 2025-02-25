@@ -74,7 +74,6 @@ const Footer = () => {
                 height: 250,
                 borderRadius: "16px",
                 overflow: "hidden",
-                boxShadow: "0px 0px 15px rgba(255, 215, 0, 0.5)",
               }}
             >
               <iframe
