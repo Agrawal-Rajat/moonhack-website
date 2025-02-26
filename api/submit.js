@@ -42,7 +42,7 @@ export default async function handler(req, res) {
       const sheetId = process.env.GOOGLE_SHEET_ID;
 
       try {
-        // Prepare team data
+        // Prepare team data to append to Google Sheets
         const teamData = teamMembers.map(member => [
           member.name,
           member.contact,
@@ -72,7 +72,7 @@ export default async function handler(req, res) {
             requestBody: {
               name: file.originalFilename,
               mimeType: file.mimetype,
-              parents: ['1pevxLHbW9g90gMZbERoCyALSNPDxVER-'],
+              parents: ['1pevxLHbW9g90gMZbERoCyALSNPDxVER-'], // Google Drive folder ID
             },
             media: {
               body: fs.createReadStream(filePath),
@@ -87,7 +87,7 @@ export default async function handler(req, res) {
         if (imageUrl) {
           await sheets.spreadsheets.values.update({
             spreadsheetId: sheetId,
-            range: `Sheet1!H${rowNumber}`,
+            range: `Sheet1!H${rowNumber}`, // Update column H with the image URL
             valueInputOption: 'RAW',
             resource: {
               values: [[imageUrl]],
@@ -96,7 +96,7 @@ export default async function handler(req, res) {
         }
 
         console.log('File uploaded to Drive:', imageUrl);
-        return res.status(200).json({ message: 'Registration successful!' });
+        return res.status(200).json({ message: 'Registration successful!', imageUrl });
       } catch (error) {
         console.error('Error during registration:', error);
         return res.status(500).json({ message: error.message || 'Server error. Please try again later.' });
