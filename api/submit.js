@@ -101,21 +101,6 @@ export default async function handler(req, res) {
 
       console.log('Team data:', teamData);
 
-      // Append registration data to Google Sheets
-      const sheetResponse = await sheets.spreadsheets.values.append({
-        spreadsheetId: sheetId,
-        range: 'Sheet1!A2',
-        valueInputOption: 'RAW',
-        resource: {
-          values: [
-            [name, contact, email, college, city, teamName, utr],
-            ...teamData, // Append team members
-          ],
-        },
-      });
-
-      const rowNumber = parseInt(sheetResponse.data.updates.updatedRange.split(':')[0].match(/\d+/)[0]);
-
       // Upload the payment screenshot to Google Drive
       let imageUrl = null;
       if (file) {
@@ -147,19 +132,18 @@ export default async function handler(req, res) {
         console.log('File uploaded to Drive:', imageUrl);
       }
 
-      // Update the Google Sheet with the image URL
-      if (imageUrl) {
-        const sheetUpdateResponse = await sheets.spreadsheets.values.update({
-          spreadsheetId: sheetId,
-          range: `Sheet1!H${rowNumber}`, // Update column H with the image URL
-          valueInputOption: 'RAW',
-          resource: {
-            values: [[imageUrl]],
-          },
-        });
-
-        console.log('Google Sheets updated with image URL:', sheetUpdateResponse.data);
-      }
+      // Now that you have the image URL, append everything (including the image URL) to the Google Sheets
+      const sheetResponse = await sheets.spreadsheets.values.append({
+        spreadsheetId: sheetId,
+        range: 'Sheet1!A2', // The range in the sheet
+        valueInputOption: 'RAW',
+        resource: {
+          values: [
+            [name, contact, email, college, city, teamName, utr, imageUrl], // Add image URL here
+            ...teamData, // Append team members data
+          ],
+        },
+      });
 
       return res.status(200).json({ message: 'Registration successful!', imageUrl });
     } catch (error) {
