@@ -12,6 +12,7 @@ export const config = {
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     const form = new IncomingForm();
+    console.log(form);
     form.uploadDir = '/tmp'; // Temporary directory for uploaded files (in Vercel)
     form.keepExtensions = true; // Retain file extensions
 
