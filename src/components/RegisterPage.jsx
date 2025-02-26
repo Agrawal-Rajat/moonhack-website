@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { TextField, Button, Typography, Card, CardContent } from "@mui/material";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
-import "./RegisterPage.css"
+import "./RegisterPage.css";
 
 const RegisterPage = () => {
   const formRef = useRef(null);
@@ -17,9 +17,6 @@ const RegisterPage = () => {
     college: "",
     city: "",
     teamName: "",
-    member1Name: "",
-    member1Contact: "",
-    member1College: "",
     member2Name: "",
     member2Contact: "",
     member2College: "",
@@ -57,10 +54,7 @@ const RegisterPage = () => {
     formDataToSend.append("teamName", formData.teamName);
     formDataToSend.append("utr", formData.utr);
 
-    // Append individual team member data
-    formDataToSend.append("member1Name", formData.member1Name);
-    formDataToSend.append("member1Contact", formData.member1Contact);
-    formDataToSend.append("member1College", formData.member1College);
+    // Append individual team member data (excluding member1)
     formDataToSend.append("member2Name", formData.member2Name);
     formDataToSend.append("member2Contact", formData.member2Contact);
     formDataToSend.append("member2College", formData.member2College);
@@ -84,7 +78,6 @@ const RegisterPage = () => {
 
       const result = await response.json();
       console.log(result);
-      
 
       if (result.message === "Registration successful!") {
         setMessage({ type: "success", text: "Registration Successful!" });
@@ -95,9 +88,6 @@ const RegisterPage = () => {
           college: "",
           city: "",
           teamName: "",
-          member1Name: "",
-          member1Contact: "",
-          member1College: "",
           member2Name: "",
           member2Contact: "",
           member2College: "",
@@ -124,21 +114,21 @@ const RegisterPage = () => {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
       <Card ref={formRef} sx={{ maxWidth: 650, margin: "auto", p: 4, boxShadow: 10, borderRadius: 8, backgroundColor: "transparent" }}>
         <CardContent>
-        <Typography
-          variant="h2"
-          sx={{
-            fontWeight: "bold",
-            mb: 3,
-            mt:4,
-            fontSize: { xs: "3rem", sm: "4rem", md: "4.3rem" },
-            fontFamily: "Impact, sans-serif",
-            background: "linear-gradient(90deg, #f4c2c2, #e6b8a2)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
-        >
-          Registration
-        </Typography>
+          <Typography
+            variant="h2"
+            sx={{
+              fontWeight: "bold",
+              mb: 3,
+              mt: 4,
+              fontSize: { xs: "3rem", sm: "4rem", md: "4.3rem" },
+              fontFamily: "Impact, sans-serif",
+              background: "linear-gradient(90deg, #f4c2c2, #e6b8a2)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            Registration
+          </Typography>
 
           {/* Personal Details */}
           <TextField
@@ -243,11 +233,11 @@ const RegisterPage = () => {
             }}
           />
 
-          {/* Team Member Inputs (1-4) */}
-          {['member1', 'member2', 'member3', 'member4'].map((member, index) => (
+          {/* Team Member Inputs (2-4) */}
+          {['member2', 'member3', 'member4'].map((member, index) => (
             <div key={member}>
               <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 2, color: "White" }}>
-                Team Member {index + 1}
+                Team Member {index + 2}
               </Typography>
               <TextField
                 label="Name"
@@ -301,8 +291,8 @@ const RegisterPage = () => {
           ))}
 
           {/* Payment Screenshot */}
-          <Typography variant="subtitle1" sx={{ mt: 2, mb:2, fontWeight: 600, color:"white" }}>
-            Payment Screenshot 
+          <Typography variant="subtitle1" sx={{ mt: 2, mb: 2, fontWeight: 600, color: "white" }}>
+            Payment Screenshot
           </Typography>
           <input
             type="file"
@@ -330,22 +320,26 @@ const RegisterPage = () => {
             fullWidth
             sx={{
               borderRadius: "30px",
-              padding: "12px",
+              padding: "12px 30px",
+              fontSize: "18px",
               fontWeight: "bold",
-              boxShadow: 3,
-              "&:hover": {
-                backgroundColor: "#3b5998",
-              },
             }}
             onClick={handleSubmit}
             disabled={loading}
           >
-            {loading ? "Submitting..." : "Register"}
+            {loading ? "Submitting..." : "Submit"}
           </Button>
 
-          {/* Message */}
+          {/* Display Success or Error Message */}
           {message && (
-            <Typography variant="body1" align="center" sx={{ mt: 3, color: message.type === "success" ? "green" : "red" }}>
+            <Typography
+              variant="body2"
+              sx={{
+                mt: 3,
+                textAlign: "center",
+                color: message.type === "success" ? "green" : "red",
+              }}
+            >
               {message.text}
             </Typography>
           )}

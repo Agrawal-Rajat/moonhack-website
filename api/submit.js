@@ -63,7 +63,6 @@ export default async function handler(req, res) {
 
     const {
       name, contact, email, college, city, teamName, utr,
-      member1Name, member1Contact, member1College,
       member2Name, member2Contact, member2College,
       member3Name, member3Contact, member3College,
       member4Name, member4Contact, member4College,
@@ -93,7 +92,6 @@ export default async function handler(req, res) {
     try {
       // Prepare team data
       const teamData = [
-        [member1Name, member1Contact, member1College],
         [member2Name, member2Contact, member2College],
         [member3Name, member3Contact, member3College],
         [member4Name, member4Contact, member4College]
