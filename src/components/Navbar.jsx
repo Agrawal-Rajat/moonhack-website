@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   AppBar,
@@ -12,7 +12,6 @@ import {
   IconButton,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import gsap from "gsap";
 
 const menuItems = [
   { label: "Home", id: "home" },
@@ -26,37 +25,6 @@ const menuItems = [
 
 const Navbar = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
-  const registerRef = useRef(null);
-
-  useEffect(() => {
-    gsap.fromTo(
-      registerRef.current,
-      { scale: 1 },
-      {
-        scale: 1.1,
-        repeat: -1,
-        yoyo: true,
-        duration: 0.8,
-        ease: "power1.inOut",
-      }
-    );
-
-    // Cracker animation
-    const sparkles = gsap.timeline({ repeat: -1, delay: 0.5 });
-    sparkles
-      .to(registerRef.current, {
-        boxShadow: "0px 0px 10px 2px rgba(255, 215, 0, 0.7)",
-        duration: 0.3,
-      })
-      .to(registerRef.current, {
-        boxShadow: "0px 0px 15px 5px rgba(255, 140, 0, 0.8)",
-        duration: 0.2,
-      })
-      .to(registerRef.current, {
-        boxShadow: "0px 0px 5px 2px rgba(255, 215, 0, 0.5)",
-        duration: 0.3,
-      });
-  }, []);
 
   const navigate = useNavigate(); // Get navigate function
 
@@ -73,13 +41,10 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Floating Navbar */}
+      {/* Navbar without floating effect */}
       <AppBar
-        position="fixed"
+        position="static"  // Changed to static to remove floating behavior
         sx={{
-          top: 10,
-          left: "50%",
-          transform: "translateX(-50%)",
           backgroundColor: "rgba(0, 0, 0, 0.7)",
           borderRadius: "40px",
           padding: "5px 20px",
@@ -87,6 +52,7 @@ const Navbar = () => {
           maxWidth: "900px",
           boxShadow: "0px 4px 15px rgba(0,0,0,0.3)",
           zIndex: 10,
+          margin: "0 auto",  // Centering navbar
         }}
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -112,7 +78,6 @@ const Navbar = () => {
 
           {/* Register Button */}
           <Button
-            ref={registerRef}
             sx={{
               color: "#fff",
               backgroundColor: "#f39c12",
