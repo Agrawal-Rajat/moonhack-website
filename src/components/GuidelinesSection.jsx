@@ -15,17 +15,54 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import gsap from "gsap";
 
 const guidelines = [
-  { title: "Team Formation", description: "Participants can form teams of 2 to 5 members." },
-  { title: "Project Scope", description: "Teams can work on any project within the given theme or problem statement." },
-  { title: "Time Limit", description: "The Hackathon will have a specific time limit." },
-  { title: "Code Ownership", description: "All code must be original and created during the Hackathon." },
-  { title: "Collaboration", description: "Teams can collaborate with mentors but not with other teams." },
-  { title: "Presentation", description: "Each team must present their project to the judging panel." },
-  { title: "Judging Criteria", description: "Judging is based on innovation, technical execution, and user experience." },
-  { title: "Fair Play", description: "Cheating, plagiarism, or unfair practices result in immediate disqualification." },
-  { title: "Intellectual Property", description: "Participants retain ownership of their projects, but organizers may showcase them for promotional purposes." },
-  { title: "Code of Conduct", description: "Participants must adhere to professionalism and respect." },
-  { title: "Prizes and Awards", description: "Winners receive cash prizes, mentorships, and more." },
+  {
+    title: "Team Formation",
+    description: "Participants can form teams of 4 members.",
+  },
+  {
+    title: "Project Scope",
+    description:
+      "Teams can work on any project within the given theme or problem statement.",
+  },
+  {
+    title: "Time Limit",
+    description: "The Hackathon will have a specific time limit.",
+  },
+  {
+    title: "Code Ownership",
+    description: "All code must be original and created during the Hackathon.",
+  },
+  {
+    title: "Collaboration",
+    description: "Teams can collaborate with mentors but not with other teams.",
+  },
+  {
+    title: "Presentation",
+    description: "Each team must present their project to the judging panel.",
+  },
+  {
+    title: "Judging Criteria",
+    description:
+      "Judging is based on innovation, technical execution, and user experience.",
+  },
+  {
+    title: "Fair Play",
+    description:
+      "Cheating, plagiarism, or unfair practices result in immediate disqualification.",
+  },
+  {
+    title: "Intellectual Property",
+    description:
+      "Participants retain ownership of their projects, but organizers may showcase them for promotional purposes.",
+  },
+  {
+    title: "Code of Conduct",
+    description: "Participants must adhere to professionalism and respect.",
+  },
+  {
+    title: "Prizes and Awards",
+    description: "Winners receive cash prizes, mentorships, and more.",
+  },
 ];
 
 const GuidelinesSection = () => {
@@ -82,11 +119,17 @@ const GuidelinesSection = () => {
                 "&:before": { display: "none" },
               }}
             >
-              <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "#ffd700" }} />}>
-                <Typography sx={{ fontWeight: "bold", color: "#fff" }}>{item.title}</Typography>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon sx={{ color: "#ffd700" }} />}
+              >
+                <Typography sx={{ fontWeight: "bold", color: "#fff" }}>
+                  {item.title}
+                </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography sx={{ color: "#ddd" }}>{item.description}</Typography>
+                <Typography sx={{ color: "#ddd" }}>
+                  {item.description}
+                </Typography>
               </AccordionDetails>
             </Accordion>
           ))}
@@ -95,7 +138,14 @@ const GuidelinesSection = () => {
         // Grid Layout for Desktop View
         <Grid container spacing={3} justifyContent="center">
           {guidelines.map((item, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index} ref={(el) => (guidelineRefs.current[index] = el)}>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              key={index}
+              ref={(el) => (guidelineRefs.current[index] = el)}
+            >
               <Card
                 sx={{
                   background: "rgba(255, 255, 255, 0.1)",
@@ -110,11 +160,18 @@ const GuidelinesSection = () => {
                   },
                 }}
               >
-                <CardContent sx={{ textAlign: "center", color: "#fff", padding: "20px" }}>
-                  <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1, color: "#ffd700" }}>
+                <CardContent
+                  sx={{ textAlign: "center", color: "#fff", padding: "20px" }}
+                >
+                  <Typography
+                    variant="h6"
+                    sx={{ fontWeight: "bold", mb: 1, color: "#ffd700" }}
+                  >
                     {item.title}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: "#ddd" }}>{item.description}</Typography>
+                  <Typography variant="body2" sx={{ color: "#ddd" }}>
+                    {item.description}
+                  </Typography>
                 </CardContent>
               </Card>
             </Grid>
