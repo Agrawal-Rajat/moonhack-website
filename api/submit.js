@@ -1,7 +1,6 @@
 import { google } from 'googleapis';
 import { IncomingForm } from 'formidable';
 import fs from 'fs';
-import path from 'path';
 
 // Disable body parser for file uploads
 export const config = {
@@ -48,10 +47,10 @@ export default async function handler(req, res) {
           member.college,
         ]);
 
-        // Append registration data to Google Sheets
+        // Append registration data to Google Sheets, starting from A2
         const sheetResponse = await sheets.spreadsheets.values.append({
           spreadsheetId: sheetId,
-          range: 'Sheet1!A1', // Adjust range as needed (e.g., 'Sheet1!A1')
+          range: 'Sheet1!A2', // Start appending data from A2
           valueInputOption: 'RAW',
           resource: {
             values: [
@@ -60,6 +59,8 @@ export default async function handler(req, res) {
             ],
           },
         });
+
+        const rowNumber = sheetResponse.data.updates.updatedRange.split('!')[1].split(':')[0].replace(/[A-Z]/g, '');
 
         // Upload the payment screenshot to Google Drive
         let imageUrl = null;
@@ -70,7 +71,7 @@ export default async function handler(req, res) {
             requestBody: {
               name: file.originalFilename,
               mimeType: file.mimetype,
-              parents: [process.env.GOOGLE_DRIVE_FOLDER_ID], // Optional: specify folder
+              parents: ['1pevxLHbW9g90gMZbERoCyALSNPDxVER-'], // Google Drive folder ID (ensure this is correct)
             },
             media: {
               body: fs.createReadStream(filePath),
@@ -84,14 +85,9 @@ export default async function handler(req, res) {
 
         // Append the image URL to the Google Sheets in the same row
         if (imageUrl) {
-          // We calculate the row number dynamically based on the updated range
-          const updatedRange = sheetResponse.data.updates.updatedRange.split('!')[1];
-          const rowNumber = updatedRange.split(':')[0].replace(/[A-Z]/g, ''); // Extract the row number from the updated range
-          
-          // Update the sheet with the image URL in the correct row
           await sheets.spreadsheets.values.update({
             spreadsheetId: sheetId,
-            range: `Sheet1!H${rowNumber}`, // Adjust range to the correct column and row
+            range: `Sheet1!H${rowNumber}`, // Update the image URL in column H of the correct row
             valueInputOption: 'RAW',
             resource: {
               values: [[imageUrl]],  // Store the image URL in the correct column
