@@ -26,8 +26,16 @@ export default async function handler(req, res) {
       console.log('Files:', files);
 
       const { name, contact, email, college, city, teamName, teamMembers, utr } = fields;
-      const file = files.paymentScreenshot && files.paymentScreenshot[0];
 
+      // Handle teamMembers: Ensure it's defined and is an array
+      const teamData = Array.isArray(teamMembers) ? teamMembers.map(member => [
+        member.name || '',
+        member.contact || '',
+        member.college || '',
+      ]) : [];
+
+      // Handle file upload: Ensure the file is there
+      const file = files.paymentScreenshot && files.paymentScreenshot[0];
       if (!file) {
         return res.status(400).json({ message: 'No payment screenshot uploaded.' });
       }
@@ -48,13 +56,6 @@ export default async function handler(req, res) {
       const sheetId = process.env.GOOGLE_SHEET_ID;
 
       try {
-        // Prepare team data to append to Google Sheets
-        const teamData = teamMembers.map(member => [
-          member.name,
-          member.contact,
-          member.college,
-        ]);
-
         // Append registration data to Google Sheets
         const sheetResponse = await sheets.spreadsheets.values.append({
           spreadsheetId: sheetId,
