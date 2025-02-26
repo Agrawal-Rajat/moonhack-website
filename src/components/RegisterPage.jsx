@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Container, TextField, Button, Typography, Grid } from "@mui/material";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
-import './RegisterPage.css'
+import "./RegisterPage.css";
 
 const RegisterPage = () => {
   const [screenshot, setScreenshot] = useState(null);
@@ -26,7 +26,7 @@ const RegisterPage = () => {
       sx={{
         minHeight: "100vh",
         color: "#ffffff",
-        padding: 4,
+        padding: 10,
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -35,20 +35,18 @@ const RegisterPage = () => {
     >
       <motion.div className="register-form" style={{ width: "100%" }}>
         <Typography
-          variant="h4"
-          align="center"
-          gutterBottom
+          variant="h2"
           sx={{
-            fontWeight: "900",
-            fontSize: "3rem",
-            letterSpacing: "2px",
-            textTransform: "uppercase",
-            fontFamily: "'Impact', 'Arial Black', sans-serif",
-            mb: 3,
-            mt: 6,
+            fontWeight: "bold",
+            mb: 4,
+            fontSize: { xs: "3rem", sm: "4rem", md: "4.3rem" },
+            fontFamily: "Impact, sans-serif",
+            background: "linear-gradient(90deg, #f4c2c2, #e6b8a2)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
           }}
         >
-          MOONHACK REGISTRATION
+          MoonHack Registration
         </Typography>
 
         {/* Personal Details */}
