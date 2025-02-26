@@ -26,11 +26,12 @@ const RegisterPage = () => {
       sx={{
         minHeight: "100vh",
         color: "#ffffff",
-        padding: 10,
+        padding: { xs: 3, sm: 10 }, // Reduce padding on small screens
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        overflow: "hidden",
       }}
     >
       <motion.div className="register-form" style={{ width: "100%" }}>
@@ -39,11 +40,14 @@ const RegisterPage = () => {
           sx={{
             fontWeight: "bold",
             mb: 4,
-            fontSize: { xs: "3rem", sm: "4rem", md: "4.3rem" },
+            fontSize: { xs: "2rem", sm: "3rem", md: "4rem" }, // Decrease for mobile
+            textAlign: "center", // Ensure it stays within bounds
             fontFamily: "Impact, sans-serif",
             background: "linear-gradient(90deg, #f4c2c2, #e6b8a2)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
+            wordBreak: "break-word", // Prevent overflow
+            mt:8,
           }}
         >
           MoonHack Registration
