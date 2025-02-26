@@ -14,7 +14,7 @@ const faqs = [
   {
     question: " What is MoonHack 2025?",
     answer:
-      "MoonHack 2025 is a global hackathon where tech enthusiasts build innovative projects and compete for amazing prizes!",
+      "MoonHack 2025 is a global hackathon, organized by TechnoClubs of Medicaps University where tech enthusiasts build innovative projects and compete for amazing prizes!",
   },
   {
     question: " Who can participate?",
@@ -22,9 +22,9 @@ const faqs = [
       "Anyone with a passion for technology and problem-solving! Students, professionals, and beginners are welcome.",
   },
   {
-    question: " What are the participation fees?",
+    question: " What are the Registration fees?",
     answer:
-      "Zero! It's completely free to participate and showcase your skills.",
+      "Registration Fees is 400 per team, each team consisting of 4 participants",
   },
   {
     question: " Are there any prizes?",
