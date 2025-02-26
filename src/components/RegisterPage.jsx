@@ -85,7 +85,7 @@ const RegisterPage = () => {
       console.log(result);
       
 
-      if (result.success) {
+      if (result.message === "Registration successful!") {
         setMessage({ type: "success", text: "Registration Successful!" });
         setFormData({
           name: "",
