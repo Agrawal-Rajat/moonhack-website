@@ -1,5 +1,5 @@
 import { google } from 'googleapis';
-import { IncomingForm } from 'formidable';
+import formidable from 'formidable';
 import fs from 'fs';
 
 // Disable body parser for file uploads
@@ -11,12 +11,13 @@ export const config = {
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const form = new IncomingForm();
-    console.log(form);
-    form.uploadDir = '/tmp'; // Temporary directory for uploaded files (in Vercel)
-    form.keepExtensions = true; // Retain file extensions
+    const form = new formidable.IncomingForm();
 
-    // Handle form submission
+    // Set up temporary directory for uploaded files
+    form.uploadDir = '/tmp';
+    form.keepExtensions = true;
+
+    // Parse the form data
     form.parse(req, async (err, fields, files) => {
       if (err) {
         console.error('Form parsing error:', err);
@@ -24,34 +25,35 @@ export default async function handler(req, res) {
       }
 
       const { name, contact, email, college, city, teamName, teamMembers, utr } = fields;
-      const file = files.paymentScreenshot && files.paymentScreenshot[0];
-
-      // Set up the Google Sheets and Google Drive client using the service account
-      const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY); // Service account key stored in environment variable
-      const auth = new google.auth.GoogleAuth({
-        credentials,
-        scopes: [
-          'https://www.googleapis.com/auth/spreadsheets',
-          'https://www.googleapis.com/auth/drive.file',
-        ],
-      });
-
-      const sheets = google.sheets({ version: 'v4', auth });
-      const drive = google.drive({ version: 'v3', auth });
-      const sheetId = process.env.GOOGLE_SHEET_ID; // Google Sheets ID
+      const file = files.paymentScreenshot ? files.paymentScreenshot[0] : null;
 
       try {
-        // Prepare team data to append to Google Sheets
-        const teamData = teamMembers.map(member => [
+        // Google Sheets and Drive configuration
+        const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY); // Service account credentials
+        const auth = new google.auth.GoogleAuth({
+          credentials,
+          scopes: [
+            'https://www.googleapis.com/auth/spreadsheets',
+            'https://www.googleapis.com/auth/drive.file',
+          ],
+        });
+
+        const sheets = google.sheets({ version: 'v4', auth });
+        const drive = google.drive({ version: 'v3', auth });
+
+        const sheetId = process.env.GOOGLE_SHEET_ID; // Sheet ID
+
+        // Prepare the team data for Google Sheets
+        const teamData = teamMembers.map((member) => [
           member.name,
           member.contact,
           member.college,
         ]);
 
         // Append registration data to Google Sheets, starting from A2
-        const sheetResponse = await sheets.spreadsheets.values.append({
+        const appendResponse = await sheets.spreadsheets.values.append({
           spreadsheetId: sheetId,
-          range: 'Sheet1!A2', // Start appending data from A2
+          range: 'Sheet1!A2', // Starting from A2 to avoid overwriting header
           valueInputOption: 'RAW',
           resource: {
             values: [
@@ -61,37 +63,37 @@ export default async function handler(req, res) {
           },
         });
 
-        const rowNumber = sheetResponse.data.updates.updatedRange.split('!')[1].split(':')[0].replace(/[A-Z]/g, '');
+        // Extract the row number where the data was appended
+        const rowNumber = appendResponse.data.updates.updatedRange.split('!')[1].split(':')[0].replace(/[A-Z]/g, '');
 
-        // Upload the payment screenshot to Google Drive
+        // Upload the payment screenshot to Google Drive if present
         let imageUrl = null;
         if (file) {
-          const filePath = file.path;
+          const filePath = file.filepath;
 
           const driveResponse = await drive.files.create({
             requestBody: {
               name: file.originalFilename,
               mimeType: file.mimetype,
-              parents: ['1pevxLHbW9g90gMZbERoCyALSNPDxVER-'], // Google Drive folder ID (ensure this is correct)
+              parents: ['1pevxLHbW9g90gMZbERoCyALSNPDxVER-'], // Google Drive folder ID
             },
             media: {
               body: fs.createReadStream(filePath),
             },
           });
 
-          // Retrieve the file URL after uploading
           const fileId = driveResponse.data.id;
-          imageUrl = `https://drive.google.com/uc?id=${fileId}`; // Generate public URL of the uploaded file
+          imageUrl = `https://drive.google.com/uc?id=${fileId}`; // Generate the public URL of the file
         }
 
-        // Append the image URL to the Google Sheets in the same row
+        // Update the image URL in the corresponding row in Google Sheets
         if (imageUrl) {
           await sheets.spreadsheets.values.update({
             spreadsheetId: sheetId,
-            range: `Sheet1!H${rowNumber}`, // Update the image URL in column H of the correct row
+            range: `Sheet1!H${rowNumber}`, // Column H will store the image URL
             valueInputOption: 'RAW',
             resource: {
-              values: [[imageUrl]],  // Store the image URL in the correct column
+              values: [[imageUrl]],
             },
           });
         }
