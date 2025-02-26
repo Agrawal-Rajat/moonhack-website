@@ -1,124 +1,110 @@
-import { google } from "googleapis";
-import express from "express";
-import multer from "multer";
-import fs from "fs";
-import path from "path";
-import dotenv from "dotenv";
+import { google } from 'googleapis';
+import multer from 'multer';
+import { IncomingForm } from 'formidable';
+import fs from 'fs';
+import path from 'path';
+import { promisify } from 'util';
 
-dotenv.config();
-
-const app = express();
-const upload = multer({ dest: "uploads/" }); // Temporary storage for files
-
-app.use(express.json());
-
-// Google API Credentials
-const googleClientEmail = process.env.CLIENT_EMAIL;
-const googlePrivateKey = process.env.PRIVATE_KEY.replace(/\\n/g, "\n");
-const DRIVE_FOLDER_ID = "1pevxLHbW9g90gMZbERoCyALSNPDxVER-"; // Google Drive folder ID
-const SPREADSHEET_ID = "122VtMpnEjRk3mYyd9njYNQub4kBSDQer2E73o0sbTgo"; // Google Sheets ID
-const SCOPES = ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/spreadsheets"];
-
-async function authenticate() {
-    const jwtClient = new google.auth.JWT(googleClientEmail, null, googlePrivateKey, SCOPES);
-    await jwtClient.authorize();
-    return jwtClient;
-}
-
-// Upload file to Google Drive
-async function uploadToDrive(auth, file) {
-    const drive = google.drive({ version: "v3", auth });
-
-    const response = await drive.files.create({
-        requestBody: {
-            name: file.originalname,
-            parents: [DRIVE_FOLDER_ID],
-        },
-        media: {
-            mimeType: file.mimetype,
-            body: fs.createReadStream(file.path),
-        },
-    });
-
-    const fileId = response.data.id;
-
-    // Make the file publicly accessible
-    await drive.permissions.create({
-        fileId,
-        requestBody: {
-            role: "reader",
-            type: "anyone",
-        },
-    });
-
-    // Get shareable link
-    const fileUrl = `https://drive.google.com/uc?id=${fileId}`;
-    return fileUrl;
-}
-
-// Append data to Google Sheets
-async function appendToSheet(auth, data) {
-    const sheets = google.sheets({ version: "v4", auth });
-
-    const request = {
-        spreadsheetId: SPREADSHEET_ID,
-        range: "Sheet1!A2:I",
-        valueInputOption: "RAW",
-        resource: {
-            values: [
-                [
-                    data.name,
-                    data.contact,
-                    data.email,
-                    data.college,
-                    data.teamName,
-                    data.teamMembers[0]?.name || "",
-                    data.teamMembers[0]?.contact || "",
-                    data.teamMembers[0]?.college || "",
-                    data.utrNumber,
-                    data.paymentScreenshotUrl,
-                ],
-            ],
-        },
-    };
-
-    try {
-        await sheets.spreadsheets.values.append(request);
-        console.log("✅ Data added to Google Sheets");
-    } catch (err) {
-        console.error("❌ Error appending data:", err);
-        throw new Error("Error appending data to sheet");
-    }
-}
-
-app.post("/api/submit", upload.single("screenshot"), async (req, res) => {
-    const formData = req.body;
-    const screenshotFile = req.file;
-
-    if (!formData.name || !formData.email || !formData.contact || !screenshotFile) {
-        return res.status(400).json({ error: "Missing required fields" });
-    }
-
-    try {
-        const auth = await authenticate();
-
-        // Upload to Google Drive & get shareable URL
-        const screenshotUrl = await uploadToDrive(auth, screenshotFile);
-        formData.paymentScreenshotUrl = screenshotUrl;
-
-        // Append to Google Sheets
-        await appendToSheet(auth, formData);
-
-        res.status(200).json({ message: "✅ Form submitted successfully", screenshotUrl });
-    } catch (error) {
-        console.error("❌ Error:", error);
-        res.status(500).json({ error: "Error submitting form data" });
-    } finally {
-        // Delete the local file after upload
-        if (screenshotFile) fs.unlinkSync(screenshotFile.path);
-    }
+// Set up file upload with multer
+const upload = multer({
+  dest: '/tmp/', // Temporary directory for file upload in Vercel
 });
 
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+export const config = {
+  api: {
+    bodyParser: false,  // Disable bodyParser to handle raw multipart data
+  },
+};
+
+export default async function handler(req, res) {
+  if (req.method === 'POST') {
+    const form = new IncomingForm();
+    form.uploadDir = '/tmp'; // Vercel's tmp directory for uploaded files
+    form.keepExtensions = true;
+
+    // Handle form submission
+    form.parse(req, async (err, fields, files) => {
+      if (err) {
+        return res.status(500).json({ message: 'Form parsing error.' });
+      }
+
+      const { name, contact, email, college, city, teamName, teamMembers, utr } = fields;
+      const file = files.paymentScreenshot && files.paymentScreenshot[0];
+
+      // Set up the Google Sheets and Google Drive client using the service account
+      const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY); // Store your service account key in an environment variable or Vercel Secret
+
+      const auth = new google.auth.GoogleAuth({
+        credentials,
+        scopes: [
+          'https://www.googleapis.com/auth/spreadsheets',
+          'https://www.googleapis.com/auth/drive.file',
+        ],
+      });
+
+      const sheets = google.sheets({ version: 'v4', auth });
+      const drive = google.drive({ version: 'v3', auth });
+      const sheetId = process.env.GOOGLE_SHEET_ID; // Google Sheets ID (use Vercel env variable)
+
+      try {
+        // Store form data in Google Sheets
+        const teamData = teamMembers.map(member => [
+          member.name,
+          member.contact,
+          member.college,
+        ]);
+
+        await sheets.spreadsheets.values.append({
+          spreadsheetId: sheetId,
+          range: 'Sheet1!A1', // Change range as needed
+          valueInputOption: 'RAW',
+          resource: {
+            values: [
+              [name, contact, email, college, city, teamName, utr],
+              ...teamData,
+            ],
+          },
+        });
+
+        // Upload the payment screenshot to Google Drive
+        let imageUrl = null;
+        if (file) {
+          const filePath = file.path;
+
+          const driveResponse = await drive.files.create({
+            requestBody: {
+              name: file.originalFilename,
+              mimeType: file.mimetype,
+              parents: [process.env.GOOGLE_DRIVE_FOLDER_ID], // Optional: specify folder
+            },
+            media: {
+              body: fs.createReadStream(filePath),
+            },
+          });
+
+          // Retrieve the file URL after uploading
+          const fileId = driveResponse.data.id;
+          imageUrl = `https://drive.google.com/uc?id=${fileId}`; // Generate public URL of the uploaded file
+        }
+
+        // Now that we have the image URL, append it to the Google Sheet
+        await sheets.spreadsheets.values.append({
+          spreadsheetId: sheetId,
+          range: 'Sheet1!A1', // Adjust range if necessary
+          valueInputOption: 'RAW',
+          resource: {
+            values: [[imageUrl]],  // Store the image URL
+          },
+        });
+
+        console.log('File uploaded to Drive:', imageUrl);
+        return res.status(200).json({ message: 'Registration successful!' });
+      } catch (error) {
+        console.error('Error during registration:', error);
+        return res.status(500).json({ message: 'Server error. Please try again later.' });
+      }
+    });
+  } else {
+    res.status(405).json({ message: 'Method not allowed' });
+  }
+}
