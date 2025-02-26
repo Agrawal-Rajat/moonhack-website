@@ -1,8 +1,13 @@
 import { Box, Typography } from "@mui/material";
+// Importing images directly
+import SponsorLogo1 from "../assets/SponsorLogo1.png";
+import SponsorLogo2 from "../assets/SponsorLogo2.png";
+import SponsorLogo3 from "../assets/SponsorLogo3.jpeg";
 
 const sponsors = [
-  { id: 1, logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/800px-Google_2015_logo.svg.png", name: "Google" },
-  { id: 2, logo: "https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg", name: "Nike" },
+  { id: 1, logo: SponsorLogo1, name: "Abhyudaya" },
+  { id: 2, logo: SponsorLogo2, name: "Notebales" },
+  { id: 3, logo: SponsorLogo3, name: "Coding Thinker" },
 ];
 
 const SponsorsSection = () => {
@@ -40,16 +45,24 @@ const SponsorsSection = () => {
             animation: "scrollAnimation 10s linear infinite",
             "@keyframes scrollAnimation": {
               "0%": { transform: "translateX(0)" },
-              "100%": { transform: "translateX(-25%)" }, // Adjusted for smooth scrolling
+              "100%": { transform: "translateX(-33.3%)" }, // Adjusted to fit 3 logos at a time
             },
           }}
         >
-          {[...Array(6)].flatMap(() => sponsors).map((sponsor, index) => (
-            <Box key={index} sx={{ minWidth: "150px", mx: 3 }}>
+          {[...sponsors, ...sponsors, ...sponsors].map((sponsor, index) => (
+            <Box key={index} sx={{ minWidth: "180px", mx: 4 }}>
               <img
                 src={sponsor.logo}
                 alt={sponsor.name}
-                style={{ maxWidth: "100px", height: "auto", filter: "brightness(0) invert(1)" }}
+                style={{
+                  maxWidth: "120px", // Fixed size for logos
+                  height: "auto",
+                  filter: "brightness(0) invert(1)", // Optional styling, adjust as needed
+                  objectFit: "contain", // Ensures image doesn't stretch
+                  backgroundColor: "transparent", // Ensures no background is applied
+                  display: "block", // Prevents extra white space around the image
+                  margin: "0 auto", // Centers the image within the container
+                }}
               />
             </Box>
           ))}
