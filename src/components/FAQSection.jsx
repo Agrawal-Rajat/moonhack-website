@@ -103,6 +103,9 @@ const FAQSection = () => {
               transform: "scale(1.05)",
               boxShadow: "0px 6px 20px rgba(255, 215, 0, 0.6)",
             },
+            "&:last-child": {
+              borderRadius: "16px", // Ensures the last FAQ item has rounded corners too
+            },
           }}
         >
           <AccordionSummary
@@ -121,7 +124,10 @@ const FAQSection = () => {
               backgroundColor: "rgba(0, 0, 0, 0.7)",
               color: "#fff",
               padding: "20px",
-              borderRadius: "0 0 16px 16px",
+              borderRadius: "0 0 16px 16px", // Keep the rounded bottom corners
+              "&:last-child": {
+                borderRadius: "0 0 16px 16px", // Ensure the last FAQ item has rounded bottom corners as well
+              },
             }}
           >
             <Typography>{faq.answer}</Typography>
