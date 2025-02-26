@@ -1,26 +1,20 @@
 import { google } from 'googleapis';
-import multer from 'multer';
 import { IncomingForm } from 'formidable';
 import fs from 'fs';
 import path from 'path';
-import { promisify } from 'util';
 
-// Set up file upload with multer
-const upload = multer({
-  dest: '/tmp/', // Temporary directory for file upload in Vercel
-});
-
+// Disable body parser for file uploads
 export const config = {
   api: {
-    bodyParser: false,  // Disable bodyParser to handle raw multipart data
+    bodyParser: false, // Disable bodyParser to handle raw multipart data
   },
 };
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     const form = new IncomingForm();
-    form.uploadDir = '/tmp'; // Vercel's tmp directory for uploaded files
-    form.keepExtensions = true;
+    form.uploadDir = '/tmp'; // Temporary directory for uploaded files (in Vercel)
+    form.keepExtensions = true; // Retain file extensions
 
     // Handle form submission
     form.parse(req, async (err, fields, files) => {
@@ -32,8 +26,7 @@ export default async function handler(req, res) {
       const file = files.paymentScreenshot && files.paymentScreenshot[0];
 
       // Set up the Google Sheets and Google Drive client using the service account
-      const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY); // Store your service account key in an environment variable or Vercel Secret
-
+      const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY); // Service account key stored in environment variable
       const auth = new google.auth.GoogleAuth({
         credentials,
         scopes: [
@@ -44,19 +37,20 @@ export default async function handler(req, res) {
 
       const sheets = google.sheets({ version: 'v4', auth });
       const drive = google.drive({ version: 'v3', auth });
-      const sheetId = process.env.GOOGLE_SHEET_ID; // Google Sheets ID (use Vercel env variable)
+      const sheetId = process.env.GOOGLE_SHEET_ID; // Google Sheets ID
 
       try {
-        // Store form data in Google Sheets
+        // Prepare team data to append to Google Sheets
         const teamData = teamMembers.map(member => [
           member.name,
           member.contact,
           member.college,
         ]);
 
-        await sheets.spreadsheets.values.append({
+        // Append registration data to Google Sheets
+        const sheetResponse = await sheets.spreadsheets.values.append({
           spreadsheetId: sheetId,
-          range: 'Sheet1!A1', // Change range as needed
+          range: 'Sheet1!A1', // Adjust range as needed
           valueInputOption: 'RAW',
           resource: {
             values: [
@@ -87,15 +81,17 @@ export default async function handler(req, res) {
           imageUrl = `https://drive.google.com/uc?id=${fileId}`; // Generate public URL of the uploaded file
         }
 
-        // Now that we have the image URL, append it to the Google Sheet
-        await sheets.spreadsheets.values.append({
-          spreadsheetId: sheetId,
-          range: 'Sheet1!A1', // Adjust range if necessary
-          valueInputOption: 'RAW',
-          resource: {
-            values: [[imageUrl]],  // Store the image URL
-          },
-        });
+        // Append the image URL to the Google Sheets in the same row
+        if (imageUrl) {
+          await sheets.spreadsheets.values.update({
+            spreadsheetId: sheetId,
+            range: `Sheet1!H${sheetResponse.data.updates.updatedRange.split('!')[1]}`, // Adjust range to the correct column and row
+            valueInputOption: 'RAW',
+            resource: {
+              values: [[imageUrl]],  // Store the image URL in the correct column
+            },
+          });
+        }
 
         console.log('File uploaded to Drive:', imageUrl);
         return res.status(200).json({ message: 'Registration successful!' });
