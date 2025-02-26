@@ -1,6 +1,7 @@
 import { google } from 'googleapis';
-import { IncomingForm } from 'formidable';
+import multer from 'multer';
 import fs from 'fs';
+import path from 'path';
 
 // Disable body parser for file uploads
 export const config = {
@@ -8,6 +9,19 @@ export const config = {
     bodyParser: false, // Disable bodyParser to handle raw multipart data
   },
 };
+
+// Set up multer storage configuration
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, '/tmp'); // Temporary directory for uploaded files (in Vercel or local)
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}_${file.originalname}`);
+  },
+});
+
+// Initialize multer with storage configuration
+const upload = multer({ storage });
 
 export default async function handler(req, res) {
   // CORS handling
@@ -37,30 +51,25 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  // Handle form submission for file upload
-  const form = new IncomingForm();
-  form.uploadDir = '/tmp'; // Temporary directory for uploaded files (in Vercel or local)
-  form.keepExtensions = true; // Retain file extensions
-
-  form.parse(req, async (err, fields, files) => {
+  // Use multer to handle file upload
+  upload.single('paymentScreenshot')(req, res, async (err) => {
     if (err) {
-      console.error('Form parsing error:', err);
-      return res.status(500).json({ message: 'Form parsing error.' });
+      console.error('File upload error:', err);
+      return res.status(500).json({ message: 'File upload error.' });
     }
 
-    console.log('Fields:', fields); // Log fields to see form data
-    console.log('Files:', files); // Log files to see if paymentScreenshot is included
+    console.log('Fields:', req.body); // Log form fields
+    console.log('File:', req.file); // Log uploaded file
 
-    // Destructure the form fields
     const {
       name, contact, email, college, city, teamName, utr,
       member1Name, member1Contact, member1College,
       member2Name, member2Contact, member2College,
       member3Name, member3Contact, member3College,
       member4Name, member4Contact, member4College,
-    } = fields;
+    } = req.body;
 
-    const file = files.paymentScreenshot && files.paymentScreenshot[0]; // Get the uploaded file
+    const file = req.file; // Get the uploaded file
 
     if (!file) {
       return res.status(400).json({ message: 'No payment screenshot uploaded.' });
@@ -123,7 +132,7 @@ export default async function handler(req, res) {
 
         const driveResponse = await drive.files.create({
           requestBody: {
-            name: file.originalFilename,
+            name: file.originalname,
             mimeType: file.mimetype,
             parents: ["1pevxLHbW9g90gMZbERoCyALSNPDxVER-"], // Google Drive folder ID
           },
