@@ -82,6 +82,8 @@ const RegisterPage = () => {
       });
 
       const result = await response.json();
+      console.log(result);
+      
 
       if (result.success) {
         setMessage({ type: "success", text: "Registration Successful!" });
