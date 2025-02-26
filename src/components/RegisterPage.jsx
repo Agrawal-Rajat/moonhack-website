@@ -1,234 +1,211 @@
-import React, { useEffect, useState } from "react";
-import { Container, TextField, Button, Typography, Grid } from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
+import { TextField, Button, Typography, Card, CardContent } from "@mui/material";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
-import "./RegisterPage.css";
 
 const RegisterPage = () => {
-  const [screenshot, setScreenshot] = useState(null);
+  const formRef = useRef(null);
+  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
 
-  // useEffect(() => {
-  //   gsap.from(".register-form", {
-  //     opacity: 0,
-  //     y: 30,
-  //     duration: 1,
-  //     ease: "power3.out",
-  //   });
-  // }, []);
+  const [formData, setFormData] = useState({
+    name: "",
+    contact: "",
+    email: "",
+    college: "",
+    city: "",
+    teamName: "",
+    member1Name: "",
+    member1Contact: "",
+    member1College: "",
+    member2Name: "",
+    member2Contact: "",
+    member2College: "",
+    member3Name: "",
+    member3Contact: "",
+    member3College: "",
+    member4Name: "",
+    member4Contact: "",
+    member4College: "",
+    utr: "",
+  });
 
-  const handleScreenshotUpload = (event) => {
-    setScreenshot(event.target.files[0]);
+  useEffect(() => {
+    gsap.fromTo(
+      formRef.current,
+      { opacity: 0, y: 50 },
+      { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }
+    );
+  }, []);
+
+  const handleChange = (e, field) => {
+    setFormData({ ...formData, [field]: e.target.value });
+  };
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    setMessage(null);
+
+    const formDataToSend = new FormData();
+    formDataToSend.append("name", formData.name);
+    formDataToSend.append("contact", formData.contact);
+    formDataToSend.append("email", formData.email);
+    formDataToSend.append("college", formData.college);
+    formDataToSend.append("city", formData.city);
+    formDataToSend.append("teamName", formData.teamName);
+    formDataToSend.append("utr", formData.utr);
+
+    // Append individual team member data
+    formDataToSend.append("member1Name", formData.member1Name);
+    formDataToSend.append("member1Contact", formData.member1Contact);
+    formDataToSend.append("member1College", formData.member1College);
+    formDataToSend.append("member2Name", formData.member2Name);
+    formDataToSend.append("member2Contact", formData.member2Contact);
+    formDataToSend.append("member2College", formData.member2College);
+    formDataToSend.append("member3Name", formData.member3Name);
+    formDataToSend.append("member3Contact", formData.member3Contact);
+    formDataToSend.append("member3College", formData.member3College);
+    formDataToSend.append("member4Name", formData.member4Name);
+    formDataToSend.append("member4Contact", formData.member4Contact);
+    formDataToSend.append("member4College", formData.member4College);
+
+    // Append the uploaded file only if a file is selected
+    if (file) {
+      formDataToSend.append("paymentScreenshot", file);
+    }
+
+    try {
+      const response = await fetch("/api/submit", {
+        method: "POST",
+        body: formDataToSend,
+      });
+
+      const result = await response.json();
+      console.log(result);
+      
+
+      if (result.message === "Registration successful!") {
+        setMessage({ type: "success", text: "Registration Successful!" });
+        setFormData({
+          name: "",
+          contact: "",
+          email: "",
+          college: "",
+          city: "",
+          teamName: "",
+          member1Name: "",
+          member1Contact: "",
+          member1College: "",
+          member2Name: "",
+          member2Contact: "",
+          member2College: "",
+          member3Name: "",
+          member3Contact: "",
+          member3College: "",
+          member4Name: "",
+          member4Contact: "",
+          member4College: "",
+          utr: "",
+        });
+        setFile(null);
+      } else {
+        setMessage({ type: "error", text: "Error saving data. Please try again." });
+      }
+    } catch (error) {
+      setMessage({ type: "error", text: "Server error. Please try again later." });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <Container
-      maxWidth="sm"
-      sx={{
-        minHeight: "100vh",
-        color: "#ffffff",
-        padding: { xs: 3, sm: 10 }, // Reduce padding on small screens
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        overflow: "hidden",
-      }}
-    >
-      <motion.div className="register-form" style={{ width: "100%" }}>
-        <Typography
-          variant="h2"
-          sx={{
-            fontWeight: "bold",
-            mb: 4,
-            fontSize: { xs: "2rem", sm: "3rem", md: "4rem" }, // Decrease for mobile
-            textAlign: "center", // Ensure it stays within bounds
-            fontFamily: "Impact, sans-serif",
-            background: "linear-gradient(90deg, #f4c2c2, #e6b8a2)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            wordBreak: "break-word", // Prevent overflow
-            mt:8,
-          }}
-        >
-          MoonHack Registration
-        </Typography>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
+      <Card ref={formRef} sx={{ maxWidth: 650, margin: "auto", p: 4, boxShadow: 7, borderRadius: 4, background: "#f5f5f5" }}>
+        <CardContent>
+          <Typography variant="h4" gutterBottom align="center" fontWeight={700}>
+            Premium Event Registration
+          </Typography>
 
-        {/* Personal Details */}
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Name"
-              variant="outlined"
-              sx={inputStyle}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              fullWidth
-              label="Contact"
-              variant="outlined"
-              sx={inputStyle}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              fullWidth
-              label="Email ID"
-              variant="outlined"
-              sx={inputStyle}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="College/School Name"
-              variant="outlined"
-              sx={inputStyle}
-            />
-          </Grid>
-        </Grid>
+          {/* Personal Details */}
+          <TextField label="Name" fullWidth margin="normal" variant="outlined" value={formData.name} onChange={(e) => handleChange(e, "name")} />
+          <TextField label="Contact" fullWidth margin="normal" variant="outlined" value={formData.contact} onChange={(e) => handleChange(e, "contact")} />
+          <TextField label="Email ID" fullWidth margin="normal" variant="outlined" value={formData.email} onChange={(e) => handleChange(e, "email")} />
+          <TextField label="College/School Name" fullWidth margin="normal" variant="outlined" value={formData.college} onChange={(e) => handleChange(e, "college")} />
+          <TextField label="City" fullWidth margin="normal" variant="outlined" value={formData.city} onChange={(e) => handleChange(e, "city")} />
 
-        <Typography
-          variant="h6"
-          sx={{ marginTop: 3, fontWeight: "bold", mb: 2 }}
-        >
-          Team Details
-        </Typography>
+          {/* Team Details */}
+          <Typography variant="h6" sx={{ mt: 3, fontWeight: 700 }}>
+            Team Details
+          </Typography>
+          <TextField label="Team Name" fullWidth margin="normal" variant="outlined" value={formData.teamName} onChange={(e) => handleChange(e, "teamName")} />
 
-        {/* Team Details */}
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Team Name"
-              variant="outlined"
-              sx={inputStyle}
-            />
-          </Grid>
-          {[2, 3, 4].map((num) => (
-            <React.Fragment key={num}>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label={`Team Member ${num}`}
-                  variant="outlined"
-                  sx={inputStyle}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="Contact"
-                  variant="outlined"
-                  sx={inputStyle}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="College Name"
-                  variant="outlined"
-                  sx={inputStyle}
-                />
-              </Grid>
-            </React.Fragment>
-          ))}
-        </Grid>
+          {/* Team Member 1 */}
+          <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 2 }}>
+            Team Member 1
+          </Typography>
+          <TextField label="Name" fullWidth margin="normal" variant="outlined" value={formData.member1Name} onChange={(e) => handleChange(e, "member1Name")} />
+          <TextField label="Contact" fullWidth margin="normal" variant="outlined" value={formData.member1Contact} onChange={(e) => handleChange(e, "member1Contact")} />
+          <TextField label="College Name" fullWidth margin="normal" variant="outlined" value={formData.member1College} onChange={(e) => handleChange(e, "member1College")} />
 
-        {/* Payment Section */}
-        <Typography
-          variant="h6"
-          sx={{ marginTop: 3, fontWeight: "bold", mb: 2 }}
-        >
-          Payment (Registration Fee: ₹400)
-        </Typography>
+          {/* Team Member 2 */}
+          <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 2 }}>
+            Team Member 2
+          </Typography>
+          <TextField label="Name" fullWidth margin="normal" variant="outlined" value={formData.member2Name} onChange={(e) => handleChange(e, "member2Name")} />
+          <TextField label="Contact" fullWidth margin="normal" variant="outlined" value={formData.member2Contact} onChange={(e) => handleChange(e, "member2Contact")} />
+          <TextField label="College Name" fullWidth margin="normal" variant="outlined" value={formData.member2College} onChange={(e) => handleChange(e, "member2College")} />
 
-        <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
-            <img
-              src="/assets/qr-code.png"
-              alt="QR Code"
-              style={{ width: "120px", borderRadius: "10px" }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Typography align="center" variant="body1">
-              Scan QR Code & Pay ₹400
+          {/* Team Member 3 */}
+          <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 2 }}>
+            Team Member 3
+          </Typography>
+          <TextField label="Name" fullWidth margin="normal" variant="outlined" value={formData.member3Name} onChange={(e) => handleChange(e, "member3Name")} />
+          <TextField label="Contact" fullWidth margin="normal" variant="outlined" value={formData.member3Contact} onChange={(e) => handleChange(e, "member3Contact")} />
+          <TextField label="College Name" fullWidth margin="normal" variant="outlined" value={formData.member3College} onChange={(e) => handleChange(e, "member3College")} />
+
+          {/* Team Member 4 */}
+          <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 2 }}>
+            Team Member 4
+          </Typography>
+          <TextField label="Name" fullWidth margin="normal" variant="outlined" value={formData.member4Name} onChange={(e) => handleChange(e, "member4Name")} />
+          <TextField label="Contact" fullWidth margin="normal" variant="outlined" value={formData.member4Contact} onChange={(e) => handleChange(e, "member4Contact")} />
+          <TextField label="College Name" fullWidth margin="normal" variant="outlined" value={formData.member4College} onChange={(e) => handleChange(e, "member4College")} />
+
+          {/* Payment Section */}
+          <Typography variant="h6" sx={{ mt: 3, fontWeight: 700 }}>
+            Payment (Registration Fee: ₹400)
+          </Typography>
+          <Typography variant="body1" sx={{ mt: 1 }}>
+            Scan QR Code for Payment (₹400)
+          </Typography>
+
+          <Button variant="contained" component="label" fullWidth sx={{ mt: 2, py: 1.5, borderRadius: 3, fontSize: "1rem", fontWeight: 600, backgroundColor: "#1976d2" }}>
+            Upload Payment Screenshot
+            <input type="file" accept="image/*" hidden onChange={(e) => setFile(e.target.files[0])} />
+          </Button>
+          {file && (
+            <Typography variant="body2" sx={{ mt: 1, fontStyle: "italic", color: "green" }}>
+              Uploaded: {file.name}
             </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="UTR Number"
-              variant="outlined"
-              sx={inputStyle}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Button
-              variant="contained"
-              component="label"
-              fullWidth
-              sx={buttonStyle}
-            >
-              Upload Payment Screenshot
-              <input type="file" hidden onChange={handleScreenshotUpload} />
-            </Button>
-          </Grid>
-          {screenshot && (
-            <Grid item xs={12} sx={{ textAlign: "center" }}>
-              <Typography variant="body2">
-                Screenshot Uploaded: {screenshot.name}
-              </Typography>
-            </Grid>
           )}
-        </Grid>
+          <TextField label="UTR" fullWidth margin="normal" variant="outlined" value={formData.utr} onChange={(e) => handleChange(e, "utr")} />
 
-        {/* Submit Button */}
-        <Button variant="contained" color="primary" fullWidth sx={buttonStyle}>
-          Submit Registration
-        </Button>
-      </motion.div>
-    </Container>
+          {/* Submit Button */}
+          <Button variant="contained" fullWidth sx={{ mt: 3, py: 1.5, borderRadius: 3, fontSize: "1.1rem", fontWeight: 700, backgroundColor: "#388e3c" }} onClick={handleSubmit} disabled={loading}>
+            {loading ? "Submitting..." : "Submit"}
+          </Button>
+
+          {/* Message Display */}
+          {message && (
+            <Typography variant="body1" sx={{ mt: 2, textAlign: "center", color: message.type === "success" ? "green" : "red" }}>
+              {message.text}
+            </Typography>
+          )}
+        </CardContent>
+      </Card>
+    </motion.div>
   );
-};
-
-// Oval input field styling
-const inputStyle = {
-  "& .MuiOutlinedInput-root": {
-    borderRadius: "30px",
-    color: "#ffffff",
-    padding: "5px",
-    transition: "all 0.3s ease",
-    "& fieldset": { borderColor: "#444", transition: "border 0.3s ease" },
-    "&:hover fieldset": { borderColor: "#666" },
-    "&.Mui-focused fieldset": { borderColor: "#1976d2" },
-  },
-  "& .MuiInputLabel-root": {
-    color: "#bbb",
-    transition: "color 0.3s ease",
-  },
-  "& .MuiInputBase-input": {
-    color: "#ffffff",
-    padding: "10px 15px",
-  },
-};
-
-// Smooth button styling
-const buttonStyle = {
-  backgroundColor: "#1976d2",
-  color: "#ffffff",
-  fontWeight: "bold",
-  borderRadius: "30px",
-  textTransform: "uppercase",
-  padding: "12px",
-  marginTop: "15px",
-  transition: "all 0.3s ease",
-  "&:hover": {
-    backgroundColor: "#1565c0",
-    transform: "scale(1.02)",
-  },
 };
 
 export default RegisterPage;

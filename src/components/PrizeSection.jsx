@@ -4,6 +4,7 @@ import gsap from "gsap";
 import TrophyIcon from "../assets/trophy.png"; 
 import heroImage from "../assets/heroImage.png";
 
+
 const PrizeSection = () => {
   const sectionRef = useRef(null);
   const cashRef = useRef(null);
