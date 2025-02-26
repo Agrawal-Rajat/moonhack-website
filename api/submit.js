@@ -28,6 +28,12 @@ export default async function handler(req, res) {
       const { name, contact, email, college, city, teamName, teamMembers, utr } = fields;
       const file = files.paymentScreenshot && files.paymentScreenshot[0];
 
+      if (!file) {
+        return res.status(400).json({ message: 'No payment screenshot uploaded.' });
+      }
+
+      console.log('File uploaded:', file);
+
       const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
       const auth = new google.auth.GoogleAuth({
         credentials,
@@ -64,10 +70,22 @@ export default async function handler(req, res) {
 
         const rowNumber = parseInt(sheetResponse.data.updates.updatedRange.split(':')[0].match(/\d+/)[0]);
 
+        console.log('Data appended to Google Sheets:', sheetResponse.data);
+
         // Upload the payment screenshot to Google Drive
         let imageUrl = null;
         if (file) {
           const filePath = file.path;
+          console.log('File path:', filePath);
+
+          // Check if file exists at path
+          if (fs.existsSync(filePath)) {
+            console.log('File exists:', filePath);
+          } else {
+            console.error('File not found at path:', filePath);
+            return res.status(500).json({ message: 'File not found on the server.' });
+          }
+
           const driveResponse = await drive.files.create({
             requestBody: {
               name: file.originalFilename,
@@ -81,11 +99,13 @@ export default async function handler(req, res) {
 
           const fileId = driveResponse.data.id;
           imageUrl = `https://drive.google.com/uc?id=${fileId}`;
+
+          console.log('File uploaded to Drive:', imageUrl);
         }
 
         // Update the Google Sheet with the image URL
         if (imageUrl) {
-          await sheets.spreadsheets.values.update({
+          const sheetUpdateResponse = await sheets.spreadsheets.values.update({
             spreadsheetId: sheetId,
             range: `Sheet1!H${rowNumber}`, // Update column H with the image URL
             valueInputOption: 'RAW',
@@ -93,9 +113,10 @@ export default async function handler(req, res) {
               values: [[imageUrl]],
             },
           });
+
+          console.log('Google Sheets updated with image URL:', sheetUpdateResponse.data);
         }
 
-        console.log('File uploaded to Drive:', imageUrl);
         return res.status(200).json({ message: 'Registration successful!', imageUrl });
       } catch (error) {
         console.error('Error during registration:', error);
