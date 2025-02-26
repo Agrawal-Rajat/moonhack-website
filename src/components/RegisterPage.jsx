@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { TextField, Button, Typography, Card, CardContent } from "@mui/material";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
+import "./RegisterPage.css"
 
 const RegisterPage = () => {
   const formRef = useRef(null);
@@ -121,84 +122,230 @@ const RegisterPage = () => {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
-      <Card ref={formRef} sx={{ maxWidth: 650, margin: "auto", p: 4, boxShadow: 7, borderRadius: 4, background: "#f5f5f5" }}>
+      <Card ref={formRef} sx={{ maxWidth: 650, margin: "auto", p: 4, boxShadow: 10, borderRadius: 8, backgroundColor: "transparent" }}>
         <CardContent>
-          <Typography variant="h4" gutterBottom align="center" fontWeight={700}>
-            Premium Event Registration
-          </Typography>
+        <Typography
+          variant="h2"
+          sx={{
+            fontWeight: "bold",
+            mb: 3,
+            mt:4,
+            fontSize: { xs: "3rem", sm: "4rem", md: "4.3rem" },
+            fontFamily: "Impact, sans-serif",
+            background: "linear-gradient(90deg, #f4c2c2, #e6b8a2)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          Registration
+        </Typography>
 
           {/* Personal Details */}
-          <TextField label="Name" fullWidth margin="normal" variant="outlined" value={formData.name} onChange={(e) => handleChange(e, "name")} />
-          <TextField label="Contact" fullWidth margin="normal" variant="outlined" value={formData.contact} onChange={(e) => handleChange(e, "contact")} />
-          <TextField label="Email ID" fullWidth margin="normal" variant="outlined" value={formData.email} onChange={(e) => handleChange(e, "email")} />
-          <TextField label="College/School Name" fullWidth margin="normal" variant="outlined" value={formData.college} onChange={(e) => handleChange(e, "college")} />
-          <TextField label="City" fullWidth margin="normal" variant="outlined" value={formData.city} onChange={(e) => handleChange(e, "city")} />
+          <TextField
+            label="Team Leader Name"
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            value={formData.name}
+            onChange={(e) => handleChange(e, "name")}
+            sx={{
+              backgroundColor: "#f5f5f5",
+              borderRadius: "30px",
+              boxShadow: 2,
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "30px",
+              },
+            }}
+          />
+          <TextField
+            label="Contact"
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            value={formData.contact}
+            onChange={(e) => handleChange(e, "contact")}
+            sx={{
+              backgroundColor: "#f5f5f5",
+              borderRadius: "30px",
+              boxShadow: 2,
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "30px",
+              },
+            }}
+          />
+          <TextField
+            label="Email ID"
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            value={formData.email}
+            onChange={(e) => handleChange(e, "email")}
+            sx={{
+              backgroundColor: "#f5f5f5",
+              borderRadius: "30px",
+              boxShadow: 2,
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "30px",
+              },
+            }}
+          />
+          <TextField
+            label="College/School Name"
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            value={formData.college}
+            onChange={(e) => handleChange(e, "college")}
+            sx={{
+              backgroundColor: "#f5f5f5",
+              borderRadius: "30px",
+              boxShadow: 2,
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "30px",
+              },
+            }}
+          />
+          <TextField
+            label="City"
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            value={formData.city}
+            onChange={(e) => handleChange(e, "city")}
+            sx={{
+              backgroundColor: "#f5f5f5",
+              borderRadius: "30px",
+              boxShadow: 2,
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "30px",
+              },
+            }}
+          />
 
           {/* Team Details */}
-          <Typography variant="h6" sx={{ mt: 3, fontWeight: 700 }}>
+          <Typography variant="h6" sx={{ mt: 3, fontWeight: 700, color: "White" }}>
             Team Details
           </Typography>
-          <TextField label="Team Name" fullWidth margin="normal" variant="outlined" value={formData.teamName} onChange={(e) => handleChange(e, "teamName")} />
+          <TextField
+            label="Team Name"
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            value={formData.teamName}
+            onChange={(e) => handleChange(e, "teamName")}
+            sx={{
+              backgroundColor: "#f5f5f5",
+              borderRadius: "30px",
+              boxShadow: 2,
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "30px",
+              },
+            }}
+          />
 
-          {/* Team Member 1 */}
-          <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 2 }}>
-            Team Member 1
-          </Typography>
-          <TextField label="Name" fullWidth margin="normal" variant="outlined" value={formData.member1Name} onChange={(e) => handleChange(e, "member1Name")} />
-          <TextField label="Contact" fullWidth margin="normal" variant="outlined" value={formData.member1Contact} onChange={(e) => handleChange(e, "member1Contact")} />
-          <TextField label="College Name" fullWidth margin="normal" variant="outlined" value={formData.member1College} onChange={(e) => handleChange(e, "member1College")} />
+          {/* Team Member Inputs (1-4) */}
+          {['member1', 'member2', 'member3', 'member4'].map((member, index) => (
+            <div key={member}>
+              <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 2, color: "White" }}>
+                Team Member {index + 1}
+              </Typography>
+              <TextField
+                label="Name"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                value={formData[`${member}Name`]}
+                onChange={(e) => handleChange(e, `${member}Name`)}
+                sx={{
+                  backgroundColor: "#f5f5f5",
+                  borderRadius: "30px",
+                  boxShadow: 2,
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "30px",
+                  },
+                }}
+              />
+              <TextField
+                label="Contact"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                value={formData[`${member}Contact`]}
+                onChange={(e) => handleChange(e, `${member}Contact`)}
+                sx={{
+                  backgroundColor: "#f5f5f5",
+                  borderRadius: "30px",
+                  boxShadow: 2,
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "30px",
+                  },
+                }}
+              />
+              <TextField
+                label="College Name"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                value={formData[`${member}College`]}
+                onChange={(e) => handleChange(e, `${member}College`)}
+                sx={{
+                  backgroundColor: "#f5f5f5",
+                  borderRadius: "30px",
+                  boxShadow: 2,
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "30px",
+                  },
+                }}
+              />
+            </div>
+          ))}
 
-          {/* Team Member 2 */}
-          <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 2 }}>
-            Team Member 2
+          {/* Payment Screenshot */}
+          <Typography variant="subtitle1" sx={{ mt: 2, mb:2, fontWeight: 600, color:"white" }}>
+            Payment Screenshot 
           </Typography>
-          <TextField label="Name" fullWidth margin="normal" variant="outlined" value={formData.member2Name} onChange={(e) => handleChange(e, "member2Name")} />
-          <TextField label="Contact" fullWidth margin="normal" variant="outlined" value={formData.member2Contact} onChange={(e) => handleChange(e, "member2Contact")} />
-          <TextField label="College Name" fullWidth margin="normal" variant="outlined" value={formData.member2College} onChange={(e) => handleChange(e, "member2College")} />
-
-          {/* Team Member 3 */}
-          <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 2 }}>
-            Team Member 3
-          </Typography>
-          <TextField label="Name" fullWidth margin="normal" variant="outlined" value={formData.member3Name} onChange={(e) => handleChange(e, "member3Name")} />
-          <TextField label="Contact" fullWidth margin="normal" variant="outlined" value={formData.member3Contact} onChange={(e) => handleChange(e, "member3Contact")} />
-          <TextField label="College Name" fullWidth margin="normal" variant="outlined" value={formData.member3College} onChange={(e) => handleChange(e, "member3College")} />
-
-          {/* Team Member 4 */}
-          <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 2 }}>
-            Team Member 4
-          </Typography>
-          <TextField label="Name" fullWidth margin="normal" variant="outlined" value={formData.member4Name} onChange={(e) => handleChange(e, "member4Name")} />
-          <TextField label="Contact" fullWidth margin="normal" variant="outlined" value={formData.member4Contact} onChange={(e) => handleChange(e, "member4Contact")} />
-          <TextField label="College Name" fullWidth margin="normal" variant="outlined" value={formData.member4College} onChange={(e) => handleChange(e, "member4College")} />
-
-          {/* Payment Section */}
-          <Typography variant="h6" sx={{ mt: 3, fontWeight: 700 }}>
-            Payment (Registration Fee: ₹400)
-          </Typography>
-          <Typography variant="body1" sx={{ mt: 1 }}>
-            Scan QR Code for Payment (₹400)
-          </Typography>
-
-          <Button variant="contained" component="label" fullWidth sx={{ mt: 2, py: 1.5, borderRadius: 3, fontSize: "1rem", fontWeight: 600, backgroundColor: "#1976d2" }}>
-            Upload Payment Screenshot
-            <input type="file" accept="image/*" hidden onChange={(e) => setFile(e.target.files[0])} />
-          </Button>
+          <input
+            type="file"
+            onChange={(e) => setFile(e.target.files[0])}
+            style={{
+              width: "100%",
+              padding: "10px 0px",
+              border: "2px solid #ccc",
+              borderRadius: "30px",
+              backgroundColor: "#f5f5f5",
+              fontSize: "16px",
+              marginBottom: "15px",
+            }}
+          />
           {file && (
-            <Typography variant="body2" sx={{ mt: 1, fontStyle: "italic", color: "green" }}>
-              Uploaded: {file.name}
+            <Typography variant="body2" color="primary" align="center" sx={{ mb: 2 }}>
+              {file.name}
             </Typography>
           )}
-          <TextField label="UTR" fullWidth margin="normal" variant="outlined" value={formData.utr} onChange={(e) => handleChange(e, "utr")} />
 
           {/* Submit Button */}
-          <Button variant="contained" fullWidth sx={{ mt: 3, py: 1.5, borderRadius: 3, fontSize: "1.1rem", fontWeight: 700, backgroundColor: "#388e3c" }} onClick={handleSubmit} disabled={loading}>
-            {loading ? "Submitting..." : "Submit"}
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{
+              borderRadius: "30px",
+              padding: "12px",
+              fontWeight: "bold",
+              boxShadow: 3,
+              "&:hover": {
+                backgroundColor: "#3b5998",
+              },
+            }}
+            onClick={handleSubmit}
+            disabled={loading}
+          >
+            {loading ? "Submitting..." : "Register"}
           </Button>
 
-          {/* Message Display */}
+          {/* Message */}
           {message && (
-            <Typography variant="body1" sx={{ mt: 2, textAlign: "center", color: message.type === "success" ? "green" : "red" }}>
+            <Typography variant="body1" align="center" sx={{ mt: 3, color: message.type === "success" ? "green" : "red" }}>
               {message.text}
             </Typography>
           )}
