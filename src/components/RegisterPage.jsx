@@ -46,10 +46,8 @@ const RegisterPage = () => {
   const handleSubmit = async () => {
     setLoading(true);
     setMessage(null);
-  
+
     const formDataToSend = new FormData();
-  
-    // Append regular form data
     formDataToSend.append("name", formData.name);
     formDataToSend.append("contact", formData.contact);
     formDataToSend.append("email", formData.email);
@@ -57,41 +55,36 @@ const RegisterPage = () => {
     formDataToSend.append("city", formData.city);
     formDataToSend.append("teamName", formData.teamName);
     formDataToSend.append("utr", formData.utr);
-  
-    // Create a 2D array for team members (name, contact, college)
-    const teamMembers = [
-      [formData.member1Name, formData.member1Contact, formData.member1College],
-      [formData.member2Name, formData.member2Contact, formData.member2College],
-      [formData.member3Name, formData.member3Contact, formData.member3College],
-      [formData.member4Name, formData.member4Contact, formData.member4College],
-    ];
-  
-    // Flatten and append team member data
-    teamMembers.forEach((member, index) => {
-      if (member[0] && member[1] && member[2]) {
-        formDataToSend.append(`member${index + 1}Data`, JSON.stringify(member));
-      }
-    });
-  
+
+    // Append individual team member data
+    formDataToSend.append("member1Name", formData.member1Name);
+    formDataToSend.append("member1Contact", formData.member1Contact);
+    formDataToSend.append("member1College", formData.member1College);
+    formDataToSend.append("member2Name", formData.member2Name);
+    formDataToSend.append("member2Contact", formData.member2Contact);
+    formDataToSend.append("member2College", formData.member2College);
+    formDataToSend.append("member3Name", formData.member3Name);
+    formDataToSend.append("member3Contact", formData.member3Contact);
+    formDataToSend.append("member3College", formData.member3College);
+    formDataToSend.append("member4Name", formData.member4Name);
+    formDataToSend.append("member4Contact", formData.member4Contact);
+    formDataToSend.append("member4College", formData.member4College);
+
     // Append the uploaded file only if a file is selected
     if (file) {
       formDataToSend.append("paymentScreenshot", file);
     }
-  
+
     try {
-      // Sending formData to the server
       const response = await fetch("/api/submit", {
         method: "POST",
         body: formDataToSend,
       });
-  
+
       const result = await response.json();
-  
+
       if (result.success) {
-        // Success message
         setMessage({ type: "success", text: "Registration Successful!" });
-  
-        // Clear the form data
         setFormData({
           name: "",
           contact: "",
@@ -113,8 +106,6 @@ const RegisterPage = () => {
           member4College: "",
           utr: "",
         });
-  
-        // Clear the file input
         setFile(null);
       } else {
         setMessage({ type: "error", text: "Error saving data. Please try again." });
@@ -125,7 +116,6 @@ const RegisterPage = () => {
       setLoading(false);
     }
   };
-  
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
