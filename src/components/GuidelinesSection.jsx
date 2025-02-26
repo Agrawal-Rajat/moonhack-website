@@ -17,7 +17,7 @@ import gsap from "gsap";
 const guidelines = [
   {
     title: "Team Formation",
-    description: "Participants can form teams of 4 members.",
+    description: "Participants must register as teams, with each team consisting of 4 members.",
   },
   {
     title: "Project Scope",
@@ -26,7 +26,7 @@ const guidelines = [
   },
   {
     title: "Time Limit",
-    description: "The Hackathon will have a specific time limit.",
+    description: "The Hackathon will have a specific time limit. It is a 24 Hour Hackathon",
   },
   {
     title: "Code Ownership",
@@ -51,9 +51,9 @@ const guidelines = [
       "Cheating, plagiarism, or unfair practices result in immediate disqualification.",
   },
   {
-    title: "Intellectual Property",
+    title: "No Smoking and Alcohol",
     description:
-      "Participants retain ownership of their projects, but organizers may showcase them for promotional purposes.",
+      "The event is smoke-free and alcohol-free for a safe and inclusive environment.",
   },
   {
     title: "Code of Conduct",
