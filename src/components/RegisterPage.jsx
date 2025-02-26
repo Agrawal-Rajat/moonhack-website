@@ -47,16 +47,32 @@ const RegisterPage = () => {
     setLoading(true);
     setMessage(null);
 
-    const submissionData = {
-      ...formData,
-      teamMembers: formData.teamMembers.map(member => [member.name, member.contact, member.college]),
-    };
+    // Create FormData object to send the form data, including the file
+    const formDataToSend = new FormData();
+    formDataToSend.append("name", formData.name);
+    formDataToSend.append("contact", formData.contact);
+    formDataToSend.append("email", formData.email);
+    formDataToSend.append("college", formData.college);
+    formDataToSend.append("city", formData.city);
+    formDataToSend.append("teamName", formData.teamName);
+    formDataToSend.append("utr", formData.utr);
+
+    // Append team members
+    formData.teamMembers.forEach((member, index) => {
+      formDataToSend.append(`teamMembers[${index}][name]`, member.name);
+      formDataToSend.append(`teamMembers[${index}][contact]`, member.contact);
+      formDataToSend.append(`teamMembers[${index}][college]`, member.college);
+    });
+
+    // Append the uploaded file
+    if (file) {
+      formDataToSend.append("paymentScreenshot", file);
+    }
 
     try {
       const response = await fetch("/api/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(submissionData),
+        body: formDataToSend,
       });
 
       const result = await response.json();
@@ -73,6 +89,7 @@ const RegisterPage = () => {
           teamMembers: Array(4).fill({ name: "", contact: "", college: "" }),
           utr: "",
         });
+        setFile(null);
       } else {
         setMessage({ type: "error", text: "Error saving data. Please try again." });
       }
