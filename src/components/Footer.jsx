@@ -27,37 +27,37 @@ const Footer = () => {
       }}
     >
       <Container maxWidth="lg">
-        <Grid container spacing={4} alignItems="center">
+        <Grid container spacing={4} alignItems="center" sx={{ flexDirection: { xs: "column", md: "row" } }}>
           {/* Contact Section */}
-          <Grid item xs={12} md={6} sx={{ textAlign: { xs: "center", md: "left" } }}>
+          <Grid item xs={12} md={6} sx={{ mb: { xs: 4, md: 0 }, textAlign: { xs: "left", md: "left" } }}>
             <Typography
-                    variant="h2"
-                    sx={{
-                      fontWeight: "bold",
-                      mb: 4,
-                      fontSize: { xs: "3rem", sm: "4rem", md: "4.3rem" },
-                      fontFamily: "Impact, sans-serif",
-                      background: "linear-gradient(90deg, #f4c2c2, #e6b8a2)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                    }}
-                  >
-                    Contact US
-                  </Typography>
+              variant="h2"
+              sx={{
+                fontWeight: "bold",
+                mb: 4,
+                fontSize: { xs: "3rem", sm: "4rem", md: "4.3rem" },
+                fontFamily: "Impact, sans-serif",
+                background: "linear-gradient(90deg, #f4c2c2, #e6b8a2)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              Contact Us
+            </Typography>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1, justifyContent: { xs: "center", md: "flex-start" } }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <IconButton sx={{ color: "#ffd700" }}>
                   <Email />
                 </IconButton>
                 <Typography variant="body1">info.moonhack@gmail.com</Typography>
               </Box>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1, justifyContent: { xs: "center", md: "flex-start" } }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <IconButton sx={{ color: "#ffd700" }}>
                   <Phone />
                 </IconButton>
                 <Typography variant="body1">+91 89233 75255</Typography>
               </Box>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1, justifyContent: { xs: "center", md: "flex-start" } }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <IconButton sx={{ color: "#ffd700" }}>
                   <LocationOn />
                 </IconButton>
@@ -71,7 +71,7 @@ const Footer = () => {
             <Box
               sx={{
                 width: "100%",
-                height: 250,
+                height: { xs: 200, sm: 250 },
                 borderRadius: "16px",
                 overflow: "hidden",
               }}
