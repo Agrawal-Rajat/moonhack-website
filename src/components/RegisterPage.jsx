@@ -16,12 +16,18 @@ const RegisterPage = () => {
     college: "",
     city: "",
     teamName: "",
-    teamMembers: [
-      { name: "", contact: "", college: "" },
-      { name: "", contact: "", college: "" },
-      { name: "", contact: "", college: "" },
-      { name: "", contact: "", college: "" },
-    ],
+    member1Name: "",
+    member1Contact: "",
+    member1College: "",
+    member2Name: "",
+    member2Contact: "",
+    member2College: "",
+    member3Name: "",
+    member3Contact: "",
+    member3College: "",
+    member4Name: "",
+    member4Contact: "",
+    member4College: "",
     utr: "",
   });
 
@@ -33,14 +39,8 @@ const RegisterPage = () => {
     );
   }, []);
 
-  const handleChange = (e, field, index = null) => {
-    if (index !== null) {
-      const updatedTeam = [...formData.teamMembers];
-      updatedTeam[index][field] = e.target.value;
-      setFormData({ ...formData, teamMembers: updatedTeam });
-    } else {
-      setFormData({ ...formData, [field]: e.target.value });
-    }
+  const handleChange = (e, field) => {
+    setFormData({ ...formData, [field]: e.target.value });
   };
 
   const handleSubmit = async () => {
@@ -56,11 +56,19 @@ const RegisterPage = () => {
     formDataToSend.append("teamName", formData.teamName);
     formDataToSend.append("utr", formData.utr);
 
-    formData.teamMembers.forEach((member, index) => {
-      formDataToSend.append(`teamMembers[${index}][name]`, member.name);
-      formDataToSend.append(`teamMembers[${index}][contact]`, member.contact);
-      formDataToSend.append(`teamMembers[${index}][college]`, member.college);
-    });
+    // Append individual team member data
+    formDataToSend.append("member1Name", formData.member1Name);
+    formDataToSend.append("member1Contact", formData.member1Contact);
+    formDataToSend.append("member1College", formData.member1College);
+    formDataToSend.append("member2Name", formData.member2Name);
+    formDataToSend.append("member2Contact", formData.member2Contact);
+    formDataToSend.append("member2College", formData.member2College);
+    formDataToSend.append("member3Name", formData.member3Name);
+    formDataToSend.append("member3Contact", formData.member3Contact);
+    formDataToSend.append("member3College", formData.member3College);
+    formDataToSend.append("member4Name", formData.member4Name);
+    formDataToSend.append("member4Contact", formData.member4Contact);
+    formDataToSend.append("member4College", formData.member4College);
 
     // Append the uploaded file only if a file is selected
     if (file) {
@@ -84,7 +92,18 @@ const RegisterPage = () => {
           college: "",
           city: "",
           teamName: "",
-          teamMembers: Array(4).fill({ name: "", contact: "", college: "" }),
+          member1Name: "",
+          member1Contact: "",
+          member1College: "",
+          member2Name: "",
+          member2Contact: "",
+          member2College: "",
+          member3Name: "",
+          member3Contact: "",
+          member3College: "",
+          member4Name: "",
+          member4Contact: "",
+          member4College: "",
           utr: "",
         });
         setFile(null);
@@ -119,16 +138,37 @@ const RegisterPage = () => {
           </Typography>
           <TextField label="Team Name" fullWidth margin="normal" variant="outlined" value={formData.teamName} onChange={(e) => handleChange(e, "teamName")} />
 
-          {formData.teamMembers.map((member, index) => (
-            <div key={index}>
-              <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 2 }}>
-                Team Member {index + 1}
-              </Typography>
-              <TextField label="Name" fullWidth margin="normal" variant="outlined" value={member.name} onChange={(e) => handleChange(e, "name", index)} />
-              <TextField label="Contact" fullWidth margin="normal" variant="outlined" value={member.contact} onChange={(e) => handleChange(e, "contact", index)} />
-              <TextField label="College Name" fullWidth margin="normal" variant="outlined" value={member.college} onChange={(e) => handleChange(e, "college", index)} />
-            </div>
-          ))}
+          {/* Team Member 1 */}
+          <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 2 }}>
+            Team Member 1
+          </Typography>
+          <TextField label="Name" fullWidth margin="normal" variant="outlined" value={formData.member1Name} onChange={(e) => handleChange(e, "member1Name")} />
+          <TextField label="Contact" fullWidth margin="normal" variant="outlined" value={formData.member1Contact} onChange={(e) => handleChange(e, "member1Contact")} />
+          <TextField label="College Name" fullWidth margin="normal" variant="outlined" value={formData.member1College} onChange={(e) => handleChange(e, "member1College")} />
+
+          {/* Team Member 2 */}
+          <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 2 }}>
+            Team Member 2
+          </Typography>
+          <TextField label="Name" fullWidth margin="normal" variant="outlined" value={formData.member2Name} onChange={(e) => handleChange(e, "member2Name")} />
+          <TextField label="Contact" fullWidth margin="normal" variant="outlined" value={formData.member2Contact} onChange={(e) => handleChange(e, "member2Contact")} />
+          <TextField label="College Name" fullWidth margin="normal" variant="outlined" value={formData.member2College} onChange={(e) => handleChange(e, "member2College")} />
+
+          {/* Team Member 3 */}
+          <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 2 }}>
+            Team Member 3
+          </Typography>
+          <TextField label="Name" fullWidth margin="normal" variant="outlined" value={formData.member3Name} onChange={(e) => handleChange(e, "member3Name")} />
+          <TextField label="Contact" fullWidth margin="normal" variant="outlined" value={formData.member3Contact} onChange={(e) => handleChange(e, "member3Contact")} />
+          <TextField label="College Name" fullWidth margin="normal" variant="outlined" value={formData.member3College} onChange={(e) => handleChange(e, "member3College")} />
+
+          {/* Team Member 4 */}
+          <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 2 }}>
+            Team Member 4
+          </Typography>
+          <TextField label="Name" fullWidth margin="normal" variant="outlined" value={formData.member4Name} onChange={(e) => handleChange(e, "member4Name")} />
+          <TextField label="Contact" fullWidth margin="normal" variant="outlined" value={formData.member4Contact} onChange={(e) => handleChange(e, "member4Contact")} />
+          <TextField label="College Name" fullWidth margin="normal" variant="outlined" value={formData.member4College} onChange={(e) => handleChange(e, "member4College")} />
 
           {/* Payment Section */}
           <Typography variant="h6" sx={{ mt: 3, fontWeight: 700 }}>

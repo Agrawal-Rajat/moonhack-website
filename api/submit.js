@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     'https://www.moonhack.tech',
     'https://moonhack-website.vercel.app',
   ];
-  
+
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
@@ -26,7 +26,7 @@ export default async function handler(req, res) {
 
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  
+
   // Handle preflight request
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -51,7 +51,15 @@ export default async function handler(req, res) {
     console.log('Fields:', fields); // Log fields to see form data
     console.log('Files:', files); // Log files to see if paymentScreenshot is included
 
-    const { name, contact, email, college, city, teamName, teamMembers, utr } = fields;
+    // Destructure the form fields
+    const {
+      name, contact, email, college, city, teamName, utr,
+      member1Name, member1Contact, member1College,
+      member2Name, member2Contact, member2College,
+      member3Name, member3Contact, member3College,
+      member4Name, member4Contact, member4College,
+    } = fields;
+
     const file = files.paymentScreenshot && files.paymentScreenshot[0]; // Get the uploaded file
 
     if (!file) {
@@ -75,12 +83,14 @@ export default async function handler(req, res) {
 
     try {
       // Prepare team data
-      const teamData = Array.isArray(teamMembers) ? teamMembers.map(member => [
-        member.name,
-        member.contact,
-        member.college,
-      ]) : [];
-      console.log('Fields:', fields);
+      const teamData = [
+        [member1Name, member1Contact, member1College],
+        [member2Name, member2Contact, member2College],
+        [member3Name, member3Contact, member3College],
+        [member4Name, member4Contact, member4College]
+      ].filter(row => row.some(cell => cell)); // Remove empty member entries
+
+      console.log('Team data:', teamData);
 
       // Append registration data to Google Sheets
       const sheetResponse = await sheets.spreadsheets.values.append({
@@ -90,7 +100,7 @@ export default async function handler(req, res) {
         resource: {
           values: [
             [name, contact, email, college, city, teamName, utr],
-            ...teamData,
+            ...teamData, // Append team members
           ],
         },
       });
@@ -115,7 +125,7 @@ export default async function handler(req, res) {
           requestBody: {
             name: file.originalFilename,
             mimeType: file.mimetype,
-            parents: ['1pevxLHbW9g90gMZbERoCyALSNPDxVER-'], // Google Drive folder ID
+            parents: ["1pevxLHbW9g90gMZbERoCyALSNPDxVER-"], // Google Drive folder ID
           },
           media: {
             body: fs.createReadStream(filePath),
