@@ -128,7 +128,7 @@ const Navbar = () => {
                 boxShadow: "0px 0px 20px rgba(255, 165, 0, 0.9)",
               },
             }}
-            onClick={() => window.open("/register", "_blank")}
+            onClick={() => navigate("/register")}
           >
             Register
           </Button>
@@ -174,7 +174,7 @@ const Navbar = () => {
             ))}
             <ListItem
               button
-              onClick={() => window.open("/register", "_blank")}
+              onClick={() => navigate("/register")}
               sx={{
                 backgroundColor: "#f39c12",
                 color: "#fff",
