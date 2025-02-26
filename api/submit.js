@@ -40,12 +40,12 @@ export default async function handler(req, res) {
             const file = files.screenshot;
 
             // Authenticate Google APIs using Service Account
+            const PRIVATE_KEY = "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDVqi9EX/FJMVQU\n+f3vOXbmwK9q241C1ZAUGapZi69BnQW9sKCFK5P/HYxT75ZXxWrlnOFGihH0TdyF\nrVt3q2vbgwOLoTZNZYSx12NY2ChSeurWuJJairgR7zNxKoqV6ySzjibiT13Cg7cm\nRMUcBdkxtmUu/nCbxX2n9EZrdnn0mCno3+n3j60EDIgomIsxBzTOyqJRXiJi9+2+\nsEVTuaIqX1JH7oHIaS7jjWPKkvgtKVVT4N36nRVRiNpqqK85FUCz/9w4aBp4X+TF\n1xGDK7M8DY9DSpxLs8K1VeO/YzBWjF0eqD9ACDWXbb4X4lsKieAc0x1DBNduT2uE\n/Nsz76YbAgMBAAECggEAS6Zp/eeKYsPYZWTuB9lsw97NPSRnK5a54KQFsJbIgo66\nDaOP8hav28/2c3GM5Z68bnfRO0x/duRqg9oRXJmRIrOMec+mjli3VtBQGJDQFgP3\nSfcnum8LJS5wJE1PrC0JXZmjItW++LPyENagg39+mx9dS/pCnKScDO9sT3gvTe48\niYKImG7a4XqtLAF9gjJ9DQGyrg6Zg+W7d4cgTV0K52EKmAyJoS/MbJZv+Xsjv5XC\nbpu/OdZPfrF7ETE9AbRu+CStsVYJRzRcini5xQOJQ8kqFwIlvNPFxn1GvedJHqBm\nWcujEbQtDMU0tcklJ5053LPnYRRdt98LowNVNTKe4QKBgQDzXngFXKIFGf0GeAYJ\njlgvHbRyXjyBhDukFotCLctOiYvZsqrOHjz8oBqFCCNx/M75szMEtPkizh3IKSwg\nSi62ipmUs7NvqvzEggEy33E1bcQF0WFUBs2XgQFIxsjE9GOHrxcPuqmmdZEFEDbK\nPjgzCGcI8j5Rj8vnRiohhRHhRQKBgQDgwQynArqazczL4ykP9Y96M4y5jP/q5KhC\ncx2OX7oSy89BwtxUgDBe9pYUd45m3tPe3f8HPQSfRcHmfkAp7jkDBz8dkoWB1e4u\n+Scnsz95nvPnQ52tx7qVW2VzFhqg+w3nSMx8u/eHT45rU9ze8c21y9o6TQb3afUG\nc4avtCnv3wKBgCNQpA3zITeoS8UyiX29gCJmJxcpgZIxxA3Nj6usxYHCB98xRAPg\n82ydNvvy8GHME6S8UjzunfBlBIFVKCgPW7P1bM/dO76Ki19glhfxwJXGNdm6RmtR\nCWhgufT7k4qxA/heefQ4XAHhsYeQkMLMQI93OqxbqptfSHFpBxgSHUQZAoGBAMZS\n0z1UNSGA1GRdcNB6WT712gmpl/HID4mDVuNZKTKI0bwvnIicDRLe+JPa47d2jPKu\nZeoXN8rrnSws36WgZoJ7lIAd2N02z1R32ss3ap2BW6wIiEzeX5CH879YE+tVXXFn\nVboDi2rFEuE2QUIhkOoIleq4KZuMzgABVSoaCp91AoGBAOU6/M/MKy1xJpqdRF6M\nGk7bwpDOc5YwAm8Yryv0YOWpypFqVeqoYsAeMBrNvIQ/7Ln8Rj36JB+kwT8gkhma\nIigTw3/ZB2dU9Lkd8JUtL3F3FdDaYtZhpZ3F7Id9nFscPROqQdzOAh4gP2YBqgkr\nV3+qOU5nXl201v4v1qnzvITf\n-----END PRIVATE KEY-----\n";
             const auth = new google.auth.GoogleAuth({
                 credentials: {
-                    private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
-                    client_email: process.env.GOOGLE_CLIENT_EMAIL,
-                    token_uri: process.env.GOOGLE_TOKEN_URI,
-                    project_id: process.env.GOOGLE_PROJECT_ID,
+                    private_key: PRIVATE_KEY.replace(/\\n/g, "\n"),
+                    client_email: "moonhack-register@moonhack.iam.gserviceaccount.com",
+                    project_id: "moonhack",
                 },
                 scopes: [
                     "https://www.googleapis.com/auth/drive.file",
@@ -58,7 +58,7 @@ export default async function handler(req, res) {
 
             // Upload Screenshot to Google Drive
             let fileUrl = "No file uploaded";
-            if (file && file.filepath) { 
+            if (file && file.filepath) {
                 const driveResponse = await drive.files.create({
                     requestBody: {
                         name: file.originalFilename || "uploaded_file",
