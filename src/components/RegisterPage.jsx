@@ -1,7 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import { TextField, Button, Typography, Card, CardContent } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Typography,
+  Card,
+  CardContent,
+} from "@mui/material";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { doc, setDoc } from "firebase/firestore";
+import { db, storage } from "../firebase"; // Import Firestore and Storage
 
 const RegisterPage = () => {
   const formRef = useRef(null);
@@ -64,71 +73,159 @@ const RegisterPage = () => {
       formDataToSend.append(`teamMembers[${index}][college]`, member.college);
     });
 
-    // Append the uploaded file
+    // Append the uploaded file if it exists
     if (file) {
       formDataToSend.append("paymentScreenshot", file);
     }
 
     try {
-      const response = await fetch("/api/submit", {
-        method: "POST",
-        body: formDataToSend,
+      // Upload file to Firebase Storage
+      let fileUrl = "";
+      if (file) {
+        const fileRef = ref(storage, `payment_screenshots/${file.name}`);
+        const uploadTask = uploadBytesResumable(fileRef, file);
+
+        await uploadTask.then(async () => {
+          // Get download URL after the upload is complete
+          fileUrl = await getDownloadURL(fileRef);
+        });
+      }
+
+      // Store form data along with the file URL in Firestore
+      const docRef = doc(db, "registrations", formData.email); // Use the email as the document ID (or any other unique field)
+      await setDoc(docRef, {
+        ...formData,
+        paymentScreenshotUrl: fileUrl, // Store file URL from Firebase Storage
       });
 
-      const result = await response.json();
-
-      if (result.success) {
-        setMessage({ type: "success", text: "Registration Successful!" });
-        setFormData({
-          name: "",
-          contact: "",
-          email: "",
-          college: "",
-          city: "",
-          teamName: "",
-          teamMembers: Array(4).fill({ name: "", contact: "", college: "" }),
-          utr: "",
-        });
-        setFile(null);
-      } else {
-        setMessage({ type: "error", text: "Error saving data. Please try again." });
-      }
+      setMessage({ type: "success", text: "Registration Successful!" });
+      setFormData({
+        name: "",
+        contact: "",
+        email: "",
+        college: "",
+        city: "",
+        teamName: "",
+        teamMembers: Array(4).fill({ name: "", contact: "", college: "" }),
+        utr: "",
+      });
+      setFile(null);
     } catch (error) {
-      setMessage({ type: "error", text: "Server error. Please try again later." });
+      setMessage({
+        type: "error",
+        text: "Error saving data. Please try again.",
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
-      <Card ref={formRef} sx={{ maxWidth: 650, margin: "auto", p: 4, boxShadow: 7, borderRadius: 4, background: "#f5f5f5" }}>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+    >
+      <Card
+        ref={formRef}
+        sx={{
+          maxWidth: 650,
+          margin: "auto",
+          p: 4,
+          boxShadow: 7,
+          borderRadius: 4,
+          background: "#f5f5f5",
+        }}
+      >
         <CardContent>
           <Typography variant="h4" gutterBottom align="center" fontWeight={700}>
             Premium Event Registration
           </Typography>
 
           {/* Personal Details */}
-          <TextField label="Name" fullWidth margin="normal" variant="outlined" value={formData.name} onChange={(e) => handleChange(e, "name")} />
-          <TextField label="Contact" fullWidth margin="normal" variant="outlined" value={formData.contact} onChange={(e) => handleChange(e, "contact")} />
-          <TextField label="Email ID" fullWidth margin="normal" variant="outlined" value={formData.email} onChange={(e) => handleChange(e, "email")} />
-          <TextField label="College/School Name" fullWidth margin="normal" variant="outlined" value={formData.college} onChange={(e) => handleChange(e, "college")} />
-          <TextField label="City" fullWidth margin="normal" variant="outlined" value={formData.city} onChange={(e) => handleChange(e, "city")} />
+          <TextField
+            label="Name"
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            value={formData.name}
+            onChange={(e) => handleChange(e, "name")}
+          />
+          <TextField
+            label="Contact"
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            value={formData.contact}
+            onChange={(e) => handleChange(e, "contact")}
+          />
+          <TextField
+            label="Email ID"
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            value={formData.email}
+            onChange={(e) => handleChange(e, "email")}
+          />
+          <TextField
+            label="College/School Name"
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            value={formData.college}
+            onChange={(e) => handleChange(e, "college")}
+          />
+          <TextField
+            label="City"
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            value={formData.city}
+            onChange={(e) => handleChange(e, "city")}
+          />
 
           {/* Team Details */}
           <Typography variant="h6" sx={{ mt: 3, fontWeight: 700 }}>
             Team Details
           </Typography>
-          <TextField label="Team Name" fullWidth margin="normal" variant="outlined" value={formData.teamName} onChange={(e) => handleChange(e, "teamName")} />
+          <TextField
+            label="Team Name"
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            value={formData.teamName}
+            onChange={(e) => handleChange(e, "teamName")}
+          />
 
           {formData.teamMembers.map((member, index) => (
             <div key={index}>
               <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 2 }}>
                 Team Member {index + 1}
               </Typography>
-              <TextField label="Name" fullWidth margin="normal" variant="outlined" value={member.name} onChange={(e) => handleChange(e, "name", index)} />
-              <TextField label="Contact" fullWidth margin="normal" variant="outlined" value={member.contact} onChange={(e) => handleChange(e, "contact", index)} />
-              <TextField label="College Name" fullWidth margin="normal" variant="outlined" value={member.college} onChange={(e) => handleChange(e, "college", index)} />
+              <TextField
+                label="Name"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                value={member.name}
+                onChange={(e) => handleChange(e, "name", index)}
+              />
+              <TextField
+                label="Contact"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                value={member.contact}
+                onChange={(e) => handleChange(e, "contact", index)}
+              />
+              <TextField
+                label="College Name"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                value={member.college}
+                onChange={(e) => handleChange(e, "college", index)}
+              />
             </div>
           ))}
 
@@ -139,26 +236,73 @@ const RegisterPage = () => {
           <Typography variant="body1" sx={{ mt: 1 }}>
             Scan QR Code for Payment (₹400)
           </Typography>
-          
-          <Button variant="contained" component="label" fullWidth sx={{ mt: 2, py: 1.5, borderRadius: 3, fontSize: "1rem", fontWeight: 600, backgroundColor: "#1976d2" }}>
+
+          <Button
+            variant="contained"
+            component="label"
+            fullWidth
+            sx={{
+              mt: 2,
+              py: 1.5,
+              borderRadius: 3,
+              fontSize: "1rem",
+              fontWeight: 600,
+              backgroundColor: "#1976d2",
+            }}
+          >
             Upload Payment Screenshot
-            <input type="file" accept="image/*" hidden onChange={(e) => setFile(e.target.files[0])} />
+            <input
+              type="file"
+              accept="image/*"
+              hidden
+              onChange={(e) => setFile(e.target.files[0])}
+            />
           </Button>
           {file && (
-            <Typography variant="body2" sx={{ mt: 1, fontStyle: "italic", color: "green" }}>
+            <Typography
+              variant="body2"
+              sx={{ mt: 1, fontStyle: "italic", color: "green" }}
+            >
               Uploaded: {file.name}
             </Typography>
           )}
-          <TextField label="UTR" fullWidth margin="normal" variant="outlined" value={formData.utr} onChange={(e) => handleChange(e, "utr")} />
+          <TextField
+            label="UTR"
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            value={formData.utr}
+            onChange={(e) => handleChange(e, "utr")}
+          />
 
           {/* Submit Button */}
-          <Button variant="contained" fullWidth sx={{ mt: 3, py: 1.5, borderRadius: 3, fontSize: "1.1rem", fontWeight: 700, backgroundColor: "#388e3c" }} onClick={handleSubmit} disabled={loading}>
+          <Button
+            variant="contained"
+            fullWidth
+            sx={{
+              mt: 3,
+              py: 1.5,
+              borderRadius: 3,
+              fontSize: "1.1rem",
+              fontWeight: 700,
+              backgroundColor: "#388e3c",
+            }}
+            onClick={handleSubmit}
+            disabled={loading}
+          >
             {loading ? "Submitting..." : "Submit"}
           </Button>
 
           {/* Message Display */}
           {message && (
-            <Typography variant="body1" sx={{ mt: 2, textAlign: "center", color: message.type === "success" ? "green" : "red" }}>
+            <Typography
+              variant="body1"
+              sx={{
+                mt: 2,
+                textAlign: "center",
+                color: message.type === "success" ? "green" : "red",
+              }}
+            >
               {message.text}
             </Typography>
           )}
