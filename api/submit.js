@@ -26,16 +26,8 @@ export default async function handler(req, res) {
       console.log('Files:', files);
 
       const { name, contact, email, college, city, teamName, teamMembers, utr } = fields;
-
-      // Handle teamMembers: Ensure it's defined and is an array
-      const teamData = Array.isArray(teamMembers) ? teamMembers.map(member => [
-        member.name || '',
-        member.contact || '',
-        member.college || '',
-      ]) : [];
-
-      // Handle file upload: Ensure the file is there
       const file = files.paymentScreenshot && files.paymentScreenshot[0];
+
       if (!file) {
         return res.status(400).json({ message: 'No payment screenshot uploaded.' });
       }
@@ -56,15 +48,33 @@ export default async function handler(req, res) {
       const sheetId = process.env.GOOGLE_SHEET_ID;
 
       try {
+        // Prepare the main registration data
+        const registrationData = [
+          name,
+          contact,
+          email,
+          college,
+          city,
+          teamName,
+          utr
+        ];
+
+        // Prepare team data for each member and append it to the Google Sheet
+        const teamData = teamMembers.map((member) => [
+          member.name,
+          member.contact,
+          member.college
+        ]);
+
         // Append registration data to Google Sheets
         const sheetResponse = await sheets.spreadsheets.values.append({
           spreadsheetId: sheetId,
-          range: 'Sheet1!A2',
+          range: 'Sheet1!A2', // Make sure your range is correct
           valueInputOption: 'RAW',
           resource: {
             values: [
-              [name, contact, email, college, city, teamName, utr],
-              ...teamData,
+              registrationData, // Main registration data as the first row
+              ...teamData, // Append the team members as separate rows
             ],
           },
         });
