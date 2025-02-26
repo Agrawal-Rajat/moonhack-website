@@ -3,7 +3,6 @@ import { TextField, Button, Typography, Card, CardContent } from "@mui/material"
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 
-
 const RegisterPage = () => {
   const formRef = useRef(null);
   const [file, setFile] = useState(null);
@@ -48,7 +47,6 @@ const RegisterPage = () => {
     setLoading(true);
     setMessage(null);
 
-    // Create FormData object to send the form data, including the file
     const formDataToSend = new FormData();
     formDataToSend.append("name", formData.name);
     formDataToSend.append("contact", formData.contact);
@@ -58,14 +56,13 @@ const RegisterPage = () => {
     formDataToSend.append("teamName", formData.teamName);
     formDataToSend.append("utr", formData.utr);
 
-    // Append team members
     formData.teamMembers.forEach((member, index) => {
       formDataToSend.append(`teamMembers[${index}][name]`, member.name);
       formDataToSend.append(`teamMembers[${index}][contact]`, member.contact);
       formDataToSend.append(`teamMembers[${index}][college]`, member.college);
     });
 
-    // Append the uploaded file
+    // Append the uploaded file only if a file is selected
     if (file) {
       formDataToSend.append("paymentScreenshot", file);
     }
@@ -140,7 +137,7 @@ const RegisterPage = () => {
           <Typography variant="body1" sx={{ mt: 1 }}>
             Scan QR Code for Payment (₹400)
           </Typography>
-          
+
           <Button variant="contained" component="label" fullWidth sx={{ mt: 2, py: 1.5, borderRadius: 3, fontSize: "1rem", fontWeight: 600, backgroundColor: "#1976d2" }}>
             Upload Payment Screenshot
             <input type="file" accept="image/*" hidden onChange={(e) => setFile(e.target.files[0])} />
