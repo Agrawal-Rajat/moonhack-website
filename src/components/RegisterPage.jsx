@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, TextField, Button, Typography, Grid } from "@mui/material";
+import { Container, TextField, Button, Typography, Grid, Paper } from "@mui/material";
 import { motion } from "framer-motion";
 import "./RegisterPage.css";
 
@@ -20,7 +20,6 @@ const RegisterPage = () => {
 
   const handleInputChange = (event, field, index = null) => {
     if (index !== null) {
-      // Updating team member details
       const updatedMembers = [...formData.teamMembers];
       updatedMembers[index][field] = event.target.value;
       setFormData({ ...formData, teamMembers: updatedMembers });
@@ -37,7 +36,6 @@ const RegisterPage = () => {
     setLoading(true);
     setMessage("");
 
-    // Form validation
     if (!formData.name || !formData.email || !formData.contact || !screenshot) {
       setMessage("All fields and payment screenshot are required!");
       setLoading(false);
@@ -80,69 +78,133 @@ const RegisterPage = () => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ minHeight: "100vh", padding: 3, display: "flex", flexDirection: "column", alignItems: "center" }}>
+    <Container maxWidth="md" sx={{ minHeight: "100vh", padding: 3, display: "flex", justifyContent: "center" }}>
       <motion.div className="register-form" style={{ width: "100%" }}>
-        <Typography variant="h2" sx={{ fontWeight: "bold", mb: 4, fontSize: { xs: "2rem", sm: "3rem" }, textAlign: "center" }}>
-          MoonHack Registration
-        </Typography>
+        <Paper
+          elevation={4}
+          sx={{
+            padding: 4,
+            borderRadius: 3,
+            backgroundColor: "#1E1E2E", // Dark blue shade
+            color: "#ffffff",
+          }}
+        >
+          <Typography variant="h4" sx={{ fontWeight: "bold", mb: 4, textAlign: "center", color: "#FFD700" }}>
+            MoonHack Registration
+          </Typography>
 
-        {/* Personal Details */}
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField fullWidth label="Name" variant="outlined" value={formData.name} onChange={(e) => handleInputChange(e, "name")} />
+          {/* Personal Details */}
+          <Grid container spacing={2}>
+            {[
+              { label: "Name", field: "name" },
+              { label: "Contact", field: "contact" },
+              { label: "Email ID", field: "email" },
+              { label: "College/School Name", field: "college" },
+            ].map((input, index) => (
+              <Grid item xs={12} key={index}>
+                <TextField
+                  fullWidth
+                  label={input.label}
+                  variant="outlined"
+                  value={formData[input.field]}
+                  onChange={(e) => handleInputChange(e, input.field)}
+                  InputProps={{
+                    sx: {
+                      borderRadius: "25px",
+                      backgroundColor: "#2E2E3E",
+                      color: "#ffffff",
+                      "& fieldset": { borderColor: "#FFD700" },
+                      "& input": { color: "#ffffff" },
+                    },
+                  }}
+                />
+              </Grid>
+            ))}
           </Grid>
-          <Grid item xs={6}>
-            <TextField fullWidth label="Contact" variant="outlined" value={formData.contact} onChange={(e) => handleInputChange(e, "contact")} />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField fullWidth label="Email ID" variant="outlined" value={formData.email} onChange={(e) => handleInputChange(e, "email")} />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField fullWidth label="College/School Name" variant="outlined" value={formData.college} onChange={(e) => handleInputChange(e, "college")} />
-          </Grid>
-        </Grid>
 
-        {/* Team Details */}
-        <Typography variant="h6" sx={{ marginTop: 3, fontWeight: "bold", mb: 2 }}>Team Details</Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField fullWidth label="Team Name" variant="outlined" value={formData.teamName} onChange={(e) => handleInputChange(e, "teamName")} />
-          </Grid>
+          {/* Team Details */}
+          <Typography variant="h6" sx={{ mt: 3, fontWeight: "bold", mb: 2, color: "#FFD700" }}>
+            Team Details
+          </Typography>
+          <TextField
+            fullWidth
+            label="Team Name"
+            variant="outlined"
+            value={formData.teamName}
+            onChange={(e) => handleInputChange(e, "teamName")}
+            InputProps={{
+              sx: {
+                borderRadius: "25px",
+                backgroundColor: "#2E2E3E",
+                color: "#ffffff",
+                "& fieldset": { borderColor: "#FFD700" },
+                "& input": { color: "#ffffff" },
+              },
+            }}
+          />
+
           {[0, 1, 2].map((index) => (
-            <React.Fragment key={index}>
-              <Grid item xs={12}>
-                <TextField fullWidth label={`Team Member ${index + 2}`} variant="outlined" value={formData.teamMembers[index].name} onChange={(e) => handleInputChange(e, "name", index)} />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField fullWidth label="Contact" variant="outlined" value={formData.teamMembers[index].contact} onChange={(e) => handleInputChange(e, "contact", index)} />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField fullWidth label="College Name" variant="outlined" value={formData.teamMembers[index].college} onChange={(e) => handleInputChange(e, "college", index)} />
-              </Grid>
-            </React.Fragment>
+            <Grid container spacing={2} key={index} sx={{ mt: 2 }}>
+              {["name", "contact", "college"].map((field) => (
+                <Grid item xs={field === "name" ? 12 : 6} key={field}>
+                  <TextField
+                    fullWidth
+                    label={`Team Member ${index + 2} ${field}`}
+                    variant="outlined"
+                    value={formData.teamMembers[index]?.[field] || ""}
+                    onChange={(e) => handleInputChange(e, field, index)}
+                    InputProps={{
+                      sx: {
+                        borderRadius: "25px",
+                        backgroundColor: "#2E2E3E",
+                        color: "#ffffff",
+                        "& fieldset": { borderColor: "#FFD700" },
+                        "& input": { color: "#ffffff" },
+                      },
+                    }}
+                  />
+                </Grid>
+              ))}
+            </Grid>
           ))}
-        </Grid>
 
-        {/* Payment Section */}
-        <Typography variant="h6" sx={{ marginTop: 3, fontWeight: "bold", mb: 2 }}>Payment (Registration Fee: ₹400)</Typography>
-        <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12}>
-            <TextField fullWidth label="UTR Number" variant="outlined" value={formData.utrNumber} onChange={(e) => handleInputChange(e, "utrNumber")} />
-          </Grid>
-          <Grid item xs={12}>
-            <Button variant="contained" component="label" fullWidth>
-              Upload Payment Screenshot
-              <input type="file" hidden onChange={handleScreenshotUpload} />
-            </Button>
-          </Grid>
-        </Grid>
+          {/* Payment Section */}
+          <Typography variant="h6" sx={{ mt: 3, fontWeight: "bold", mb: 2, color: "#FFD700" }}>
+            Payment (Registration Fee: ₹400)
+          </Typography>
+          <TextField
+            fullWidth
+            label="UTR Number"
+            variant="outlined"
+            value={formData.utrNumber}
+            onChange={(e) => handleInputChange(e, "utrNumber")}
+            InputProps={{
+              sx: {
+                borderRadius: "25px",
+                backgroundColor: "#2E2E3E",
+                color: "#ffffff",
+                "& fieldset": { borderColor: "#FFD700" },
+                "& input": { color: "#ffffff" },
+              },
+            }}
+          />
+          <Button variant="contained" component="label" fullWidth sx={{ mt: 2, borderRadius: "25px", backgroundColor: "#FFD700", color: "#1E1E2E" }}>
+            Upload Payment Screenshot
+            <input type="file" hidden onChange={handleScreenshotUpload} />
+          </Button>
 
-        {/* Submit Button */}
-        <Button variant="contained" color="primary" fullWidth onClick={handleSubmit} disabled={loading}>
-          {loading ? "Submitting..." : "Submit Registration"}
-        </Button>
-
-        {message && <Typography sx={{ color: "red", mt: 2 }}>{message}</Typography>}
+          {/* Submit Button */}
+          <Button
+            variant="contained"
+            fullWidth
+            sx={{ mt: 3, borderRadius: "25px", backgroundColor: "#FFD700", color: "#1E1E2E", fontWeight: "bold", fontSize: "1.1rem" }}
+            onClick={handleSubmit}
+            disabled={loading}
+          >
+            {loading ? "Submitting..." : "Submit Registration"}
+          </Button>
+          {message && <Typography sx={{ color: "red", mt: 2, textAlign: "center" }}>{message}</Typography>}
+        </Paper>
       </motion.div>
     </Container>
   );
