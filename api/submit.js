@@ -75,11 +75,12 @@ export default async function handler(req, res) {
 
     try {
       // Prepare team data
-      const teamData = teamMembers.map(member => [
+      const teamData = Array.isArray(teamMembers) ? teamMembers.map(member => [
         member.name,
         member.contact,
         member.college,
-      ]);
+      ]) : [];
+      console.log('Fields:', fields);
 
       // Append registration data to Google Sheets
       const sheetResponse = await sheets.spreadsheets.values.append({
