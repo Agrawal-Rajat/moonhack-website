@@ -29,6 +29,8 @@ const RegisterPage = () => {
     utr: "",
   });
 
+  const [errors, setErrors] = useState({});
+
   useEffect(() => {
     gsap.fromTo(
       formRef.current,
@@ -45,17 +47,24 @@ const RegisterPage = () => {
     setLoading(true);
     setMessage(null);
 
+    // Reset previous errors
+    setErrors({});
+
+    let newErrors = {};
+
     // Check for required fields
     for (let key in formData) {
       if (formData[key] === "") {
-        setMessage({ type: "error", text: "All fields are required." });
-        setLoading(false);
-        return;
+        newErrors[key] = "This field is required";
       }
     }
 
     if (!file) {
-      setMessage({ type: "error", text: "Payment screenshot is required." });
+      newErrors.file = "Payment screenshot is required";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       setLoading(false);
       return;
     }
@@ -152,6 +161,8 @@ const RegisterPage = () => {
             value={formData.name}
             onChange={(e) => handleChange(e, "name")}
             required
+            error={!!errors.name}
+            helperText={errors.name}
             sx={{
               backgroundColor: "#f5f5f5",
               borderRadius: "30px",
@@ -169,6 +180,8 @@ const RegisterPage = () => {
             value={formData.contact}
             onChange={(e) => handleChange(e, "contact")}
             required
+            error={!!errors.contact}
+            helperText={errors.contact}
             sx={{
               backgroundColor: "#f5f5f5",
               borderRadius: "30px",
@@ -186,6 +199,8 @@ const RegisterPage = () => {
             value={formData.email}
             onChange={(e) => handleChange(e, "email")}
             required
+            error={!!errors.email}
+            helperText={errors.email}
             sx={{
               backgroundColor: "#f5f5f5",
               borderRadius: "30px",
@@ -203,6 +218,8 @@ const RegisterPage = () => {
             value={formData.college}
             onChange={(e) => handleChange(e, "college")}
             required
+            error={!!errors.college}
+            helperText={errors.college}
             sx={{
               backgroundColor: "#f5f5f5",
               borderRadius: "30px",
@@ -220,6 +237,8 @@ const RegisterPage = () => {
             value={formData.city}
             onChange={(e) => handleChange(e, "city")}
             required
+            error={!!errors.city}
+            helperText={errors.city}
             sx={{
               backgroundColor: "#f5f5f5",
               borderRadius: "30px",
@@ -242,6 +261,8 @@ const RegisterPage = () => {
             value={formData.teamName}
             onChange={(e) => handleChange(e, "teamName")}
             required
+            error={!!errors.teamName}
+            helperText={errors.teamName}
             sx={{
               backgroundColor: "#f5f5f5",
               borderRadius: "30px",
@@ -266,6 +287,8 @@ const RegisterPage = () => {
                 value={formData[`${member}Name`]}
                 onChange={(e) => handleChange(e, `${member}Name`)}
                 required
+                error={!!errors[`${member}Name`]}
+                helperText={errors[`${member}Name`]}
                 sx={{
                   backgroundColor: "#f5f5f5",
                   borderRadius: "30px",
@@ -283,6 +306,8 @@ const RegisterPage = () => {
                 value={formData[`${member}Contact`]}
                 onChange={(e) => handleChange(e, `${member}Contact`)}
                 required
+                error={!!errors[`${member}Contact`]}
+                helperText={errors[`${member}Contact`]}
                 sx={{
                   backgroundColor: "#f5f5f5",
                   borderRadius: "30px",
@@ -300,6 +325,8 @@ const RegisterPage = () => {
                 value={formData[`${member}College`]}
                 onChange={(e) => handleChange(e, `${member}College`)}
                 required
+                error={!!errors[`${member}College`]}
+                helperText={errors[`${member}College`]}
                 sx={{
                   backgroundColor: "#f5f5f5",
                   borderRadius: "30px",
@@ -312,50 +339,71 @@ const RegisterPage = () => {
             </div>
           ))}
 
-          {/* Payment Screenshot */}
-          <Typography variant="subtitle1" sx={{ mt: 2, mb: 2, fontWeight: 600, color: "white" }}>
-            Payment Screenshot
-          </Typography>
+          {/* UTR and File Upload */}
+          <TextField
+            label="UTR Number"
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            value={formData.utr}
+            onChange={(e) => handleChange(e, "utr")}
+            required
+            error={!!errors.utr}
+            helperText={errors.utr}
+            sx={{
+              backgroundColor: "#f5f5f5",
+              borderRadius: "30px",
+              boxShadow: 2,
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "30px",
+              },
+            }}
+          />
           <input
             type="file"
+            accept="image/*"
             onChange={(e) => setFile(e.target.files[0])}
-            style={{
-              width: "100%",
-              padding: "10px 0px",
-              border: "2px solid #ccc",
-              borderRadius: "30px",
-              backgroundColor: "#f5f5f5",
-              fontSize: "16px",
-              marginBottom: "15px",
-            }}
             required
+            style={{
+              padding: "10px",
+              borderRadius: "30px",
+              border: "2px solid #ccc",
+              background: "#f5f5f5",
+              boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.2)",
+              display: "block",
+              marginTop: "16px",
+              width: "100%",
+            }}
           />
-          {file && (
-            <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
-              {file.name}
-            </Typography>
-          )}
+          {errors.file && <Typography color="error">{errors.file}</Typography>}
 
           {/* Submit Button */}
           <Button
             variant="contained"
             color="primary"
             fullWidth
-            sx={{
-              marginTop: "30px",
-              padding: "15px 20px",
-              borderRadius: "30px",
-              background: "linear-gradient(90deg, #f4c2c2, #e6b8a2)",
-            }}
             onClick={handleSubmit}
             disabled={loading}
+            sx={{
+              marginTop: "16px",
+              borderRadius: "30px",
+              fontWeight: "bold",
+            }}
           >
             {loading ? "Submitting..." : "Submit"}
           </Button>
 
-          {/* Message */}
+          {/* Success/Error Message */}
           {message && (
-            <Typography variant="body1" sx={{ mt: 2, color: message.type === "error" ? "red" : "green" }}>
+            <Typography
+              variant="body1"
+              sx={{
+                marginTop: "20px",
+                color: message.type === "success" ? "green" : "red",
+                textAlign: "center",
+                fontWeight: "bold",
+              }}
+            >
               {message.text}
             </Typography>
           )}
