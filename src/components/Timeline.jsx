@@ -9,8 +9,8 @@ import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 const events = [
   {
     title: 'Registration Starts',
-    time: '12 Noon',
-    date: 'February 26, 2025',
+    time: 'TBD',
+    date: 'February 27, 2025',
     description: 'Teams start registering and checking in.',
     icon: <AccessTimeIcon />,
   },
