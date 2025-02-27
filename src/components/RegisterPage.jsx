@@ -1,8 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { TextField, Button, Typography, Card, CardContent } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Typography,
+  Card,
+  CardContent,
+} from "@mui/material";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import "./RegisterPage.css";
+import Swal from "sweetalert2";
 
 const RegisterPage = () => {
   const formRef = useRef(null);
@@ -101,8 +108,11 @@ const RegisterPage = () => {
       const result = await response.json();
       console.log(result);
 
+      // Your existing registration logic
       if (result.message === "Registration successful!") {
         setMessage({ type: "success", text: "Registration Successful!" });
+
+        // Reset form data
         setFormData({
           name: "",
           contact: "",
@@ -122,19 +132,57 @@ const RegisterPage = () => {
           utr: "",
         });
         setFile(null);
+
+        // Show SweetAlert popup with success message and WhatsApp group link
+        Swal.fire({
+          icon: "success",
+          title: "Registration Successful!",
+          text: "Your registration was successful. Please join our WhatsApp group to stay updated.",
+          footer:
+            '<a href="https://chat.whatsapp.com/yourGroupInviteLink" target="_blank">Click here to join the WhatsApp group</a>',
+          confirmButtonText: "Got it!",
+        });
       } else {
-        setMessage({ type: "error", text: "Error saving data. Please try again." });
+        setMessage({
+          type: "error",
+          text: "Error saving data. Please try again.",
+        });
+
+        // Show SweetAlert popup with error message
+        Swal.fire({
+          icon: "error",
+          title: "Oops!",
+          text: "Error saving data. Please try again.",
+          confirmButtonText: "Okay",
+        });
       }
     } catch (error) {
-      setMessage({ type: "error", text: "Server error. Please try again later." });
+      setMessage({
+        type: "error",
+        text: "Server error. Please try again later.",
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
-      <Card ref={formRef} sx={{ maxWidth: 650, margin: "auto", p: 4, boxShadow: 10, borderRadius: 8, backgroundColor: "transparent" }}>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+    >
+      <Card
+        ref={formRef}
+        sx={{
+          maxWidth: 650,
+          margin: "auto",
+          p: 4,
+          boxShadow: 10,
+          borderRadius: 8,
+          backgroundColor: "transparent",
+        }}
+      >
         <CardContent>
           <Typography
             variant="h2"
@@ -250,7 +298,10 @@ const RegisterPage = () => {
           />
 
           {/* Team Details */}
-          <Typography variant="h6" sx={{ mt: 3, fontWeight: 700, color: "White" }}>
+          <Typography
+            variant="h6"
+            sx={{ mt: 3, fontWeight: 700, color: "White" }}
+          >
             Team Details
           </Typography>
           <TextField
@@ -274,9 +325,13 @@ const RegisterPage = () => {
           />
 
           {/* Team Member Inputs (2-4) */}
-          {['member2', 'member3', 'member4'].map((member, index) => (
+          {["member2", "member3", "member4"].map((member, index) => (
             <div key={member}>
-              <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 2, color: "White" }}>
+              <Typography
+                variant="subtitle1"
+                fontWeight={600}
+                sx={{ mt: 2, color: "White" }}
+              >
                 Team Member {index + 2}
               </Typography>
               <TextField
