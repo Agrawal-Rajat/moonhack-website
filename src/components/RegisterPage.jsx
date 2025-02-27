@@ -139,7 +139,7 @@ const RegisterPage = () => {
           title: "Registration Successful!",
           text: "Your registration was successful. Please join our WhatsApp group to stay updated.",
           footer:
-            '<a href="https://chat.whatsapp.com/yourGroupInviteLink" target="_blank">Click here to join the WhatsApp group</a>',
+            '<a href="https://chat.whatsapp.com/HoKjjctp0DQH7yr33aw6nO" target="_blank">Click here to join the WhatsApp group</a>',
           confirmButtonText: "Got it!",
         });
       } else {
