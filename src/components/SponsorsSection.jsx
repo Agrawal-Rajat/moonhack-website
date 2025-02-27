@@ -6,6 +6,7 @@ import Slogo3 from "../assets/Slogo3.svg";
 import Slogo4 from "../assets/Slogo4.svg";
 import Slogo5 from "../assets/Slogo5.svg";
 import Slogo6 from "../assets/Slogo6.svg";
+import Slogo7 from "../assets/Slogo7.svg"; // New sponsor logo
 
 const sponsors = [
   { id: 1, logo: Slogo1, name: "Abhyudaya" },
@@ -14,6 +15,7 @@ const sponsors = [
   { id: 4, logo: Slogo4, name: "Tech Sphere" },
   { id: 5, logo: Slogo5, name: "InnovateX" },
   { id: 6, logo: Slogo6, name: "ByteCraft" },
+  { id: 7, logo: Slogo7, name: "NextGenTech" }, // New sponsor
 ];
 
 const SponsorsSection = () => {
@@ -51,7 +53,7 @@ const SponsorsSection = () => {
             animation: "scrollAnimation 12s linear infinite",
             "@keyframes scrollAnimation": {
               "0%": { transform: "translateX(0)" },
-              "100%": { transform: "translateX(-50%)" }, // Adjusted for smooth animation
+              "100%": { transform: "translateX(-50%)" },
             },
           }}
         >
@@ -63,7 +65,7 @@ const SponsorsSection = () => {
                 height: "180px",
                 mx: 4,
                 borderRadius: "50%",
-                overflow: "hidden", // Ensures a perfect circle
+                overflow: "hidden",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -73,10 +75,10 @@ const SponsorsSection = () => {
                 src={sponsor.logo}
                 alt={sponsor.name}
                 style={{
-                  width: "100%", // Ensures it fills the wrapper
+                  width: "100%",
                   height: "100%",
-                  objectFit: "cover", // Prevents stretching
-                  borderRadius: "50%", // Ensures circular shape
+                  objectFit: "cover",
+                  borderRadius: "50%",
                 }}
               />
             </Box>
