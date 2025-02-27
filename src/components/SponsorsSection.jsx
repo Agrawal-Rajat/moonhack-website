@@ -1,13 +1,19 @@
 import { Box, Typography } from "@mui/material";
-// Importing images directly
-import SponsorLogo1 from "../assets/SponsorLogo1.png";
-import SponsorLogo2 from "../assets/SponsorLogo2.png";
-import SponsorLogo3 from "../assets/SponsorLogo3.jpeg";
+// Importing SVG logos
+import Slogo1 from "../assets/Slogo1.svg";
+import Slogo2 from "../assets/Slogo2.svg";
+import Slogo3 from "../assets/Slogo3.svg";
+import Slogo4 from "../assets/Slogo4.svg";
+import Slogo5 from "../assets/Slogo5.svg";
+import Slogo6 from "../assets/Slogo6.svg";
 
 const sponsors = [
-  { id: 1, logo: SponsorLogo1, name: "Abhyudaya" },
-  { id: 2, logo: SponsorLogo2, name: "Notebales" },
-  { id: 3, logo: SponsorLogo3, name: "Coding Thinker" },
+  { id: 1, logo: Slogo1, name: "Abhyudaya" },
+  { id: 2, logo: Slogo2, name: "Notebales" },
+  { id: 3, logo: Slogo3, name: "Coding Thinker" },
+  { id: 4, logo: Slogo4, name: "Tech Sphere" },
+  { id: 5, logo: Slogo5, name: "InnovateX" },
+  { id: 6, logo: Slogo6, name: "ByteCraft" },
 ];
 
 const SponsorsSection = () => {
@@ -42,26 +48,35 @@ const SponsorsSection = () => {
           sx={{
             display: "flex",
             width: "max-content",
-            animation: "scrollAnimation 10s linear infinite",
+            animation: "scrollAnimation 12s linear infinite",
             "@keyframes scrollAnimation": {
               "0%": { transform: "translateX(0)" },
-              "100%": { transform: "translateX(-33.3%)" }, // Adjusted to fit 3 logos at a time
+              "100%": { transform: "translateX(-50%)" }, // Adjusted for smooth animation
             },
           }}
         >
-          {[...sponsors, ...sponsors, ...sponsors].map((sponsor, index) => (
-            <Box key={index} sx={{ minWidth: "180px", mx: 4 }}>
+          {[...sponsors, ...sponsors].map((sponsor, index) => (
+            <Box
+              key={index}
+              sx={{
+                minWidth: "180px",
+                height: "180px",
+                mx: 4,
+                borderRadius: "50%",
+                overflow: "hidden", // Ensures a perfect circle
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <img
                 src={sponsor.logo}
                 alt={sponsor.name}
                 style={{
-                  maxWidth: "120px", // Fixed size for logos
-                  height: "auto",
-                  filter: "brightness(0) invert(1)", // Optional styling, adjust as needed
-                  objectFit: "contain", // Ensures image doesn't stretch
-                  backgroundColor: "transparent", // Ensures no background is applied
-                  display: "block", // Prevents extra white space around the image
-                  margin: "0 auto", // Centers the image within the container
+                  width: "100%", // Ensures it fills the wrapper
+                  height: "100%",
+                  objectFit: "cover", // Prevents stretching
+                  borderRadius: "50%", // Ensures circular shape
                 }}
               />
             </Box>
