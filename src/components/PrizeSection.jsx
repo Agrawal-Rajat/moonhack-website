@@ -4,10 +4,9 @@ import gsap from "gsap";
 import TrophyIcon from "../assets/trophy.png"; 
 import heroImage from "../assets/heroImage.png";
 
-
 const PrizeSection = () => {
   const sectionRef = useRef(null);
-  const cashRef = useRef(null);
+  const prizeRef = useRef(null);
   const goodiesRef = useRef(null);
   const internshipRef = useRef(null);
 
@@ -19,7 +18,7 @@ const PrizeSection = () => {
     );
 
     gsap.fromTo(
-      [cashRef.current, goodiesRef.current, internshipRef.current],
+      [prizeRef.current, goodiesRef.current, internshipRef.current],
       { opacity: 0, scale: 0.8 },
       {
         opacity: 1,
@@ -64,9 +63,9 @@ const PrizeSection = () => {
         }}
       />
 
-      {/* 🏅 Winning Prize */}
+      {/* 🏅 Grand Prizes */}
       <Typography
-        ref={cashRef}
+        ref={prizeRef}
         variant="h2"
         sx={{
           fontWeight: "bold",
@@ -79,24 +78,7 @@ const PrizeSection = () => {
           letterSpacing: "1px",
         }}
       >
-        ₹20,000 Grand Prize 💰
-      </Typography>
-
-      {/* 🎁 Goodies Prize */}
-      <Typography
-        ref={goodiesRef}
-        variant="h3"
-        sx={{
-          fontWeight: "bold",
-          fontSize: { xs: "2rem", sm: "2.7rem" },
-          color: "#E6E6FA", // Soft lavender
-          textShadow: "0px 0px 15px rgba(173, 216, 230, 0.9)", // Sky blue glow
-          mt: -1,
-          fontFamily: "Poppins, sans-serif",
-          letterSpacing: "0.5px",
-        }}
-      >
-        + ₹10,000 Worth of Exciting Goodies 🎁
+        Grand Prizes & Goodies Worth <span style={{ color: "#FFD700", fontSize: "5rem", fontWeight: "bold", textShadow: "0px 0px 25px #FFD700" }}>₹1,00,000 </span> 
       </Typography>
 
       {/* 🚀 Internship Opportunities */}
