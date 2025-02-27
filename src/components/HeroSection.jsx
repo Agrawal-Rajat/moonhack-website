@@ -70,8 +70,6 @@ const HeroSection = () => {
         textAlign: "center",
         color: "white",
         padding: { xs: "0 5%", md: "0 10%" }, // Adjusted for mobile
-        background:
-          "radial-gradient(circle at center, #1e293b 30%, #0d1117 90%)",
         backgroundImage: `url(${heroImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",

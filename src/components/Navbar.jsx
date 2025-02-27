@@ -43,16 +43,18 @@ const Navbar = () => {
     <>
       {/* Navbar without floating effect */}
       <AppBar
-        position="static"  // Changed to static to remove floating behavior
+        position="absolute" // Keeps it floating over the content
         sx={{
-          backgroundColor: "rgba(0, 0, 0, 0.7)",
+          backgroundColor: "black",
           borderRadius: "40px",
           padding: "5px 20px",
           width: "90%",
           maxWidth: "900px",
           boxShadow: "0px 4px 15px rgba(0,0,0,0.3)",
-          zIndex: 10,
-          margin: "0 auto",  // Centering navbar
+          zIndex: 1000, // Ensures it stays above other content
+          top: "20px", // Adjust based on hero section spacing
+          left: "50%", // Centering
+          transform: "translateX(-50%)", // Proper centering
         }}
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
