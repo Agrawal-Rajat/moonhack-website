@@ -5,11 +5,13 @@ import {
   Typography,
   Card,
   CardContent,
+  Box,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import "./RegisterPage.css";
 import Swal from "sweetalert2";
+import paymentQR from "../assets/payment_QR.svg";
 
 const RegisterPage = () => {
   const formRef = useRef(null);
@@ -394,6 +396,37 @@ const RegisterPage = () => {
             </div>
           ))}
 
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ mt: 3 }}
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 700,
+                color: "white",
+                mb: 2,
+                textAlign: "center",
+              }}
+            >
+              Scan the QR and make ₹400 payment
+            </Typography>
+            <Box
+              component="img"
+              src={paymentQR}
+              alt="QR Code"
+              sx={{
+                width: 300, // Increased size
+                height: 300,
+                borderRadius: "15px",
+                boxShadow: 3,
+              }}
+            />
+          </Box>
+
           {/* UTR and File Upload */}
           <TextField
             label="UTR Number"
@@ -420,14 +453,14 @@ const RegisterPage = () => {
             onChange={(e) => setFile(e.target.files[0])}
             required
             style={{
-              padding: "10px",
+              padding: "15px",
               borderRadius: "30px",
               border: "2px solid #ccc",
               background: "#f5f5f5",
               boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.2)",
               display: "block",
               marginTop: "16px",
-              width: "100%",
+              width: "95%",
             }}
           />
           {errors.file && <Typography color="error">{errors.file}</Typography>}
@@ -443,6 +476,7 @@ const RegisterPage = () => {
               marginTop: "16px",
               borderRadius: "30px",
               fontWeight: "bold",
+              padding: "15px",
             }}
           >
             {loading ? "Submitting..." : "Submit"}
