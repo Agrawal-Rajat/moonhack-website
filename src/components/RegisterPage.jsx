@@ -447,6 +447,17 @@ const RegisterPage = () => {
               },
             }}
           />
+          <Typography
+              variant="h7"
+              sx={{
+                fontWeight: 700,
+                color: "white",
+                mb: 2,
+                textAlign: "left",
+              }}
+            >
+              Upload Your Payment Confirmation ScreenShot
+            </Typography>
           <input
             type="file"
             accept="image/*"
