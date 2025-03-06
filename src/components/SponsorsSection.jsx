@@ -6,16 +6,18 @@ import Slogo3 from "../assets/Slogo3.svg";
 import Slogo4 from "../assets/Slogo4.svg";
 import Slogo5 from "../assets/Slogo5.svg";
 import Slogo6 from "../assets/Slogo6.svg";
-import Slogo7 from "../assets/Slogo7.svg"; // New sponsor logo
+import Slogo7 from "../assets/Slogo7.svg"; 
+import Slogo8 from "../assets/Slogo8.png"; 
 
 const sponsors = [
-  { id: 1, logo: Slogo1, name: "Abhyudaya" },
-  { id: 2, logo: Slogo2, name: "Notebales" },
-  { id: 3, logo: Slogo3, name: "Coding Thinker" },
-  { id: 4, logo: Slogo4, name: "Tech Sphere" },
-  { id: 5, logo: Slogo5, name: "InnovateX" },
-  { id: 6, logo: Slogo6, name: "ByteCraft" },
-  { id: 7, logo: Slogo7, name: "NextGenTech" }, // New sponsor
+  { id: 1, logo: Slogo1, name: "Technical Partner" },
+  { id: 2, logo: Slogo2, name: "Printing Partner" },
+  { id: 3, logo: Slogo3, name: "Educationl Partner" },
+  { id: 4, logo: Slogo4, name: "Educational Partner" },
+  { id: 5, logo: Slogo5, name: "Food Partner" },
+  { id: 6, logo: Slogo6, name: "Educational Partner" },
+  { id: 7, logo: Slogo7, name: "Media Partner"},
+  {id: 8, logo: Slogo8, name: "Technical Partner"},
 ];
 
 const SponsorsSection = () => {
@@ -62,25 +64,48 @@ const SponsorsSection = () => {
               key={index}
               sx={{
                 minWidth: "180px",
-                height: "180px",
+                height: "220px", // Increased height to accommodate text
                 mx: 4,
-                borderRadius: "50%",
-                overflow: "hidden",
                 display: "flex",
+                flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
-              <img
-                src={sponsor.logo}
-                alt={sponsor.name}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
+              <Box
+                sx={{
+                  width: "180px",
+                  height: "180px",
                   borderRadius: "50%",
+                  overflow: "hidden",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
-              />
+              >
+                <img
+                  src={sponsor.logo}
+                  alt={sponsor.name}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: "50%",
+                  }}
+                />
+              </Box>
+              <Typography
+                variant="subtitle1"
+                sx={{
+                  mt: 1,
+                  fontSize: "1rem",
+                  fontWeight: "bold",
+                  color: "white",
+                  textAlign: "center",
+                }}
+              >
+                {sponsor.name}
+              </Typography>
             </Box>
           ))}
         </Box>
