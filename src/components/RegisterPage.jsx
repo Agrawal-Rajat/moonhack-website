@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import "./RegisterPage.css";
 import Swal from "sweetalert2";
-import paymentQR from "../assets/payment_QR.svg";
+import paymentQR from "../assets/payment_QR.jpeg";
 
 const RegisterPage = () => {
   const formRef = useRef(null);
