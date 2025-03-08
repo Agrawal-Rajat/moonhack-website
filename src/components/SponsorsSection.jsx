@@ -10,12 +10,12 @@ import Slogo7 from "../assets/Slogo7.svg";
 import Slogo8 from "../assets/Slogo8.jpeg"; 
 
 const sponsors = [
-  { id: 1, logo: Slogo1, name: "Technical Partner" },
+  { id: 1, logo: Slogo1, name: "Educational Partner" },
   { id: 2, logo: Slogo2, name: "Printing Partner" },
-  { id: 3, logo: Slogo3, name: "Educationl Partner" },
-  { id: 4, logo: Slogo4, name: "Educational Partner" },
+  { id: 3, logo: Slogo3, name: "Technical Partner" },
+  { id: 4, logo: Slogo4, name: "Community Partner" },
   { id: 5, logo: Slogo5, name: "Food Partner" },
-  { id: 6, logo: Slogo6, name: "Educational Partner" },
+  { id: 6, logo: Slogo6, name: "Technical Partner" },
   { id: 7, logo: Slogo7, name: "Media Partner"},
   {id: 8, logo: Slogo8, name: "Platinum Partner"},
 ];
