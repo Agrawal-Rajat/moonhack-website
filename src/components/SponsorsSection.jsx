@@ -7,7 +7,7 @@ import Slogo4 from "../assets/Slogo4.svg";
 import Slogo5 from "../assets/Slogo5.svg";
 import Slogo6 from "../assets/Slogo6.svg";
 import Slogo7 from "../assets/Slogo7.svg"; 
-// import Slogo8 from "../assets/Slogo8.png"; 
+import Slogo8 from "../assets/Slogo8.jpeg"; 
 
 const sponsors = [
   { id: 1, logo: Slogo1, name: "Technical Partner" },
@@ -17,7 +17,7 @@ const sponsors = [
   { id: 5, logo: Slogo5, name: "Food Partner" },
   { id: 6, logo: Slogo6, name: "Educational Partner" },
   { id: 7, logo: Slogo7, name: "Media Partner"},
-  // {id: 8, logo: Slogo8, name: "Technical Partner"},
+  {id: 8, logo: Slogo8, name: "Platinum Partner"},
 ];
 
 const SponsorsSection = () => {
