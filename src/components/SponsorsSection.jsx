@@ -6,8 +6,8 @@ import Slogo3 from "../assets/Slogo3.svg";
 import Slogo4 from "../assets/Slogo4.svg";
 import Slogo5 from "../assets/Slogo5.svg";
 import Slogo6 from "../assets/Slogo6.svg";
-import Slogo7 from "../assets/Slogo7.svg"; 
-import Slogo8 from "../assets/Slogo8.jpeg"; 
+import Slogo7 from "../assets/Slogo7.svg";
+import Slogo8 from "../assets/Slogo8.jpeg";
 
 const sponsors = [
   { id: 1, logo: Slogo1, name: "Educational Partner" },
@@ -16,13 +16,20 @@ const sponsors = [
   { id: 4, logo: Slogo4, name: "Community Partner" },
   { id: 5, logo: Slogo5, name: "Food Partner" },
   { id: 6, logo: Slogo6, name: "Technical Partner" },
-  { id: 7, logo: Slogo7, name: "Media Partner"},
-  {id: 8, logo: Slogo8, name: "Platinum Partner"},
+  { id: 7, logo: Slogo7, name: "Media Partner" },
+  { id: 8, logo: Slogo8, name: "Platinum Partner" },
 ];
 
 const SponsorsSection = () => {
   return (
-    <Box sx={{ py: 2, textAlign: "center", background: "transparent", overflow: "hidden" }}>
+    <Box
+      sx={{
+        py: 2,
+        textAlign: "center",
+        background: "transparent",
+        overflow: "hidden",
+      }}
+    >
       <Typography
         variant="h2"
         sx={{
