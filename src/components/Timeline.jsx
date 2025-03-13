@@ -17,7 +17,7 @@ const events = [
   {
     title: 'Ideation + Problem Statement',
     time: '12 Noon',
-    date: 'March 13, 2025',
+    date: 'March 15, 2025',
     description: 'Teams work on their problem statements and ideas.',
     icon: <BuildIcon />,
   },
