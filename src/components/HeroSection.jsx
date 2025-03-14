@@ -12,6 +12,7 @@ const HeroSection = () => {
   const titleRef = useRef(null);
   const countdownRef = useRef(null);
   const buttonRef = useRef(null);
+  const problemButtonRef = useRef(null);
 
   const calculateTimeLeft = () => {
     const targetDate = new Date("2025-03-22T00:00:00");
@@ -31,7 +32,7 @@ const HeroSection = () => {
   useEffect(() => {
     setTimeLeft(calculateTimeLeft());
 
-    if (titleRef.current && countdownRef.current && buttonRef.current) {
+    if (titleRef.current && countdownRef.current && buttonRef.current && problemButtonRef.current) {
       gsap.fromTo(
         titleRef.current,
         { opacity: 0, y: -50 },
@@ -49,7 +50,7 @@ const HeroSection = () => {
         }
       );
       gsap.fromTo(
-        buttonRef.current,
+        [buttonRef.current, problemButtonRef.current],
         { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 1, ease: "power3.out", delay: 0.6 }
       );
@@ -69,29 +70,28 @@ const HeroSection = () => {
         justifyContent: "center",
         textAlign: "center",
         color: "white",
-        padding: { xs: "0 5%", md: "0 10%" }, // Adjusted for mobile
+        padding: { xs: "0 5%", md: "0 10%" },
         backgroundImage: `url(${heroImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
     >
-      {/* Logo Section */}
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "center", // Ensures center alignment
+          justifyContent: "center",
           width: "100%",
-          maxWidth: "400px", // Limits max width
+          maxWidth: "400px",
           height: "80px",
           border: "1px solid white",
           borderRadius: "75px",
           mb: 3,
           padding: "0 15px",
-          gap: "30px", // Adds spacing between logos and "X"
+          gap: "30px",
           "@media (max-width: 600px)": {
-            maxWidth: "90%", // Makes it more fluid on small screens
+            maxWidth: "90%",
           },
         }}
       >
@@ -124,84 +124,26 @@ const HeroSection = () => {
           }}
         />
       </Box>
-
-      {/* Main Title */}
-      <Typography
-        ref={titleRef}
-        variant="h1"
-        sx={{
-          fontFamily: "Impact, sans-serif",
-          fontSize: { xs: "3rem", md: "5rem" }, // Responsive font size
-          fontWeight: "bold",
-        }}
-      >
+      <Typography ref={titleRef} variant="h1" sx={{ fontFamily: "Impact, sans-serif", fontSize: { xs: "3rem", md: "5rem" }, fontWeight: "bold" }}>
         MOONHACK 2025
       </Typography>
-
-      {/* Subheading */}
-      <Typography
-        variant="subtitle1"
-        sx={{
-          fontSize: { xs: "1rem", md: "1.2rem" },
-          color: "#aaa",
-          mt: 1,
-        }}
-      >
+      <Typography variant="subtitle1" sx={{ fontSize: { xs: "1rem", md: "1.2rem" }, color: "#aaa", mt: 1 }}>
         Innovate. Code. Dominate.
       </Typography>
-
-      {/* Countdown Heading */}
-      <Typography
-        variant="h5"
-        sx={{
-          fontWeight: "bold",
-          mt: 3,
-          color: "skyblue",
-          fontSize: { xs: "1.1rem", md: "1.3rem" },
-        }}
-      >
+      <Typography variant="h5" sx={{ fontWeight: "bold", mt: 3, color: "skyblue", fontSize: { xs: "1.1rem", md: "1.3rem" } }}>
         The Countdown Begins Now!
       </Typography>
-
-      {/* Countdown Timer */}
-      <Typography
-        ref={countdownRef}
-        variant="h5"
-        sx={{
-          fontWeight: "bold",
-          mt: 2,
-          fontSize: { xs: "1.2rem", md: "1.5rem" },
-          color: "pink",
-          letterSpacing: "8px",
-          textShadow: "0 0 15px rgba(255, 105, 180, 0.8)",
-          textAlign: "center",
-          animation: "pulse 1s ease-in-out infinite alternate",
-          "@keyframes pulse": {
-            "0%": { transform: "scale(1)", opacity: 1 },
-            "100%": { transform: "scale(1.1)", opacity: 0.8 },
-          },
-        }}
-      >
+      <Typography ref={countdownRef} variant="h5" sx={{ fontWeight: "bold", mt: 2, fontSize: { xs: "1.2rem", md: "1.5rem" }, color: "pink", letterSpacing: "8px", textShadow: "0 0 15px rgba(255, 105, 180, 0.8)", textAlign: "center", animation: "pulse 1s ease-in-out infinite alternate", "@keyframes pulse": { "0%": { transform: "scale(1)", opacity: 1 }, "100%": { transform: "scale(1.1)", opacity: 0.8 } } }}>
         {timeLeft}
       </Typography>
-
-      {/* Register Button */}
-      <Button
-        ref={buttonRef}
-        variant="contained"
-        onClick={() => navigate("/register")}
-        sx={{
-          mt: 4,
-          fontSize: { xs: "0.9rem", md: "1rem" },
-          padding: { xs: "12px 24px", md: "16px 32px" },
-          background: "linear-gradient(90deg, #ff9800, #ff5700)",
-          borderRadius: "50px",
-          fontWeight: "bold",
-          "&:hover": { background: "linear-gradient(90deg, #ff7700, #ff3300)" },
-        }}
-      >
-        Register Now
-      </Button>
+      <Box sx={{ display: "flex", gap: 2, mt: 4 }}>
+        <Button ref={buttonRef} variant="contained" onClick={() => navigate("/register")} sx={{ fontSize: { xs: "0.9rem", md: "1rem" }, padding: { xs: "12px 24px", md: "16px 32px" }, background: "linear-gradient(90deg, #ff9800, #ff5700)", borderRadius: "50px", fontWeight: "bold", "&:hover": { background: "linear-gradient(90deg, #ff7700, #ff3300)" } }}>
+          Register Now
+        </Button>
+        <Button ref={problemButtonRef} variant="contained" onClick={() => navigate("/problem-statement")} sx={{ fontSize: { xs: "0.9rem", md: "1rem" }, padding: { xs: "12px 24px", md: "16px 32px" }, background: "linear-gradient(90deg, #007bff, #0056b3)", borderRadius: "50px", fontWeight: "bold", "&:hover": { background: "linear-gradient(90deg, #0056b3, #003580)" } }}>
+          Problem Statement
+        </Button>
+      </Box>
     </Box>
   );
 };

@@ -9,6 +9,7 @@ import AboutSection from "./components/AboutSection";
 import PrizeSection from "./components/PrizeSection";
 import GuidelinesSection from "./components/GuidelinesSection";
 import Footer from "./components/Footer";
+import ProblemStatement from "./components/ProblemStatement";
 
 export default function App() {
   return (
@@ -35,7 +36,9 @@ export default function App() {
 
         {/* Register Page Route */}
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/problem-statement" element={<ProblemStatement />} />
         <Route path="*" element={<RegisterPage />} />
+        <Route path="*" element={<ProblemStatement />} />
       </Routes>
     </Router>
   );
