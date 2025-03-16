@@ -103,7 +103,7 @@ const ProblemStatement = () => {
           7. Future Plans – How this can grow and improve<br />
           8. Final Thoughts – Summary<br /><br />
           🔸 <strong>Figma File Submission</strong> – Your design, UI/UX flow, and system architecture.<br />
-          🔸 <strong>Recorded Video Presentation</strong> – A concise explanation of your Figma design and the unique value proposition of your solution.
+          🔸 <strong>Recorded Video Presentation</strong> – A concise explanation of your Presentation (PPT) design and the unique value proposition of your solution.
         </Typography>
         
       </Paper>
