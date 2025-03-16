@@ -85,19 +85,19 @@ const Navbar = () => {
               backgroundColor: "#f39c12",
               textTransform: "none",
               fontWeight: "bold",
-              fontSize: "0.85rem",
+              fontSize: "0.7rem",
               borderRadius: "20px",
-              padding: "5px 15px",
+              padding: "3px 10px",
               transition: "0.3s",
               "&:hover": {
                 backgroundColor: "#e67e22",
-                transform: "scale(1.15)",
+                transform: "scale(1)",
                 boxShadow: "0px 0px 20px rgba(255, 165, 0, 0.9)",
               },
             }}
-            onClick={() => navigate("/register")}
+            onClick={() => navigate("/problem-statement")}
           >
-            Register
+            Problem Statement
           </Button>
 
           {/* Mobile Menu Button */}
