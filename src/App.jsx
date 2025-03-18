@@ -35,9 +35,9 @@ export default function App() {
         />
 
         {/* Register Page Route */}
-        <Route path="/register" element={<RegisterPage />} />
+        {/* <Route path="/register" element={<RegisterPage />} /> */}
         <Route path="/problem-statement" element={<ProblemStatement />} />
-        <Route path="*" element={<RegisterPage />} />
+        {/* <Route path="*" element={<RegisterPage />} /> */}
         <Route path="*" element={<ProblemStatement />} />
       </Routes>
     </Router>
