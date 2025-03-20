@@ -56,6 +56,11 @@ const guidelines = [
       "The event is smoke-free and alcohol-free for a safe and inclusive environment.",
   },
   {
+    title: "NO Refund Policy",
+    description:
+      "If you are not selected in Ideathon Round, No refund will be initiated.",
+  },
+  {
     title: "Code of Conduct",
     description: "Participants must adhere to professionalism and respect.",
   },
