@@ -2,46 +2,25 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Timeline as MuiTimeline, TimelineItem, TimelineSeparator, TimelineDot, TimelineContent, TimelineConnector } from '@mui/lab';
 import { Typography, Box } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import BuildIcon from '@mui/icons-material/Build';
+import EventIcon from '@mui/icons-material/Event';
+import LunchDiningIcon from '@mui/icons-material/LunchDining';
+import CodeIcon from '@mui/icons-material/Code';
+import CoffeeIcon from '@mui/icons-material/Coffee';
+import PeopleIcon from '@mui/icons-material/People';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
+import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 
 const events = [
-  {
-    title: 'Registration Starts',
-    time: 'TBD',
-    date: 'February 27, 2025',
-    description: 'Teams start registering and checking in.',
-    icon: <AccessTimeIcon />,
-  },
-  {
-    title: 'Ideation + Problem Statement',
-    time: '12 Noon',
-    date: 'March 15, 2025',
-    description: 'Teams work on their problem statements and ideas.',
-    icon: <BuildIcon />,
-  },
-  {
-    title: 'Submission Deadline',
-    time: '11:59 PM',
-    date: 'March 17, 2025',
-    description: 'Final submission deadline for teams.',
-    icon: <HourglassEmptyIcon />,
-  },
-  {
-    title: 'Ideation Result',
-    time: 'TBD',
-    date: 'March 19, 2025',
-    description: 'Results of the ideation phase are announced.',
-    icon: <AccessTimeIcon />,
-  },
-  {
-    title: 'Event',
-    time: 'TBD',
-    date: 'March 22, 2025',
-    description: 'The main hackathon event takes place.',
-    icon: <CheckCircleIcon />,
-  },
+  { title: 'Registration Desk', time: '8:30 AM', icon: <AccessTimeIcon /> },
+  { title: 'Inauguration', time: '9:15 AM', icon: <EventIcon /> },
+  { title: 'Start of Event', time: '10:30 AM', icon: <CodeIcon /> },
+  { title: 'Lunch', time: '2:00 PM', icon: <LunchDiningIcon /> },
+  { title: 'Resume Coding', time: '3:00 PM', icon: <CodeIcon /> },
+  { title: 'Tea Break', time: '6:30 PM', icon: <CoffeeIcon /> },
+  { title: 'Start of Evaluation and Networking Time', time: '7:00 PM', icon: <PeopleIcon /> },
+  { title: 'Result Declaration', time: '10:00 PM', icon: <CheckCircleIcon /> },
+  { title: 'Certificate Distribution', time: '10:15 PM', icon: <CardGiftcardIcon /> },
+  { title: 'Goodies Distribution', time: '10:30 PM', icon: <CardGiftcardIcon /> }
 ];
 
 const Timeline = () => {
@@ -83,7 +62,7 @@ const Timeline = () => {
           WebkitTextFillColor: "transparent",
         }}
       >
-        TimeLine
+        Program TimeLine
       </Typography>
       <MuiTimeline position="alternate" sx={{ padding: '0 20px' }}>
         {events.map((event, index) => (
@@ -126,7 +105,7 @@ const Timeline = () => {
                 {event.title}
               </Typography>
               <Typography variant="body2" sx={{ color: '#757575', fontWeight: 'bold' }}>
-                {event.date} | {event.time}
+                {event.time}
               </Typography>
             </TimelineContent>
           </TimelineItem>
