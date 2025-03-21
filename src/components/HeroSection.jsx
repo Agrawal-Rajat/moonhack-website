@@ -137,9 +137,9 @@ const HeroSection = () => {
         {timeLeft}
       </Typography>
       <Box sx={{ display: "flex", gap: 2, mt: 4 }}>
-        {/* <Button ref={buttonRef} variant="contained" onClick={() => navigate("/register")} sx={{ fontSize: { xs: "0.9rem", md: "1rem" }, padding: { xs: "12px 24px", md: "16px 32px" }, background: "linear-gradient(90deg, #ff9800, #ff5700)", borderRadius: "50px", fontWeight: "bold", "&:hover": { background: "linear-gradient(90deg, #ff7700, #ff3300)" } }}>
-          Register Now
-        </Button> */}
+        <Button ref={buttonRef} variant="contained" onClick={() => navigate("/ideathon-result")} sx={{ fontSize: { xs: "0.9rem", md: "1rem" }, padding: { xs: "12px 24px", md: "16px 32px" }, background: "linear-gradient(90deg, #ff9800, #ff5700)", borderRadius: "50px", fontWeight: "bold", "&:hover": { background: "linear-gradient(90deg, #ff7700, #ff3300)" } }}>
+          Ideathon Result
+        </Button>
         <Button ref={problemButtonRef} variant="contained" onClick={() => navigate("/problem-statement")} sx={{ fontSize: { xs: "0.9rem", md: "1rem" }, padding: { xs: "12px 24px", md: "16px 32px" }, background: "linear-gradient(90deg, #007bff, #0056b3)", borderRadius: "50px", fontWeight: "bold", "&:hover": { background: "linear-gradient(90deg, #0056b3, #003580)" } }}>
           Problem Statement
         </Button>
